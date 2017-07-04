@@ -1,0 +1,10 @@
+{
+  "title": "seams",
+  "subtitle": "this is a test page",
+  "content-1": "This is a test of the seams system with more complex markup",
+  "content-2": "I hope it works well.  I wish I could use a lorem ipsum generator right now because I need to fill some content",
+  "url-to-test": "/test",
+  "url-to-index": "/",
+  "link-to-test": "Go to the test page",
+  "link-to-index": "Go back to the homepage"
+}
