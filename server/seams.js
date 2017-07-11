@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 const render = require('./render');
 const admin = require('./admin');
 const cache = require('./cache');
+const db = require('./db');
 
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
@@ -35,14 +36,15 @@ function respond200(response, data) {
   response.end();
 }
 
-function seams(dir) {
+function seams({dir, connection}) {
+
+  if(connection) db(connection);
 
   return function(request, response) {
     let url = request.url;
     if(url === '/') url = '/index.html';
 
     const start = new Date();
-
 
     let fileName = url.match(fileNameRegExp);
     let fileType = url.match(fileTypeRegExp);
@@ -63,7 +65,7 @@ function seams(dir) {
       return;
     }
 
-    fs.readFile(path.join(dir, url), (err, content) => {
+    fs.readFile(path.join(dir, url), async (err, content) => {
 
       const mimeType = mimeTypes[fileType];
 
@@ -74,8 +76,8 @@ function seams(dir) {
 
       if(mimeType === 'text/html' || mimeType === 'application/xml') {
         const $ = cheerio.load(content);
-        render(url, $);
-        admin(url, $);
+        await render(url, $);
+        //admin(url, $);
         content = $.html();
       }
 
