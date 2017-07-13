@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const qs = require('querystring');
 
 const cheerio = require('cheerio');
 
@@ -7,6 +8,7 @@ const render = require('./render');
 const admin = require('./admin');
 const cache = require('./cache');
 const db = require('./db');
+const save = require('./save');
 
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
@@ -40,7 +42,8 @@ function seams({dir, connection}) {
 
   if(connection) db(connection);
 
-  return function(request, response) {
+  function get(request, response) {
+
     let url = request.url;
     if(url === '/') url = '/index.html';
 
@@ -77,7 +80,7 @@ function seams({dir, connection}) {
       if(mimeType === 'text/html' || mimeType === 'application/xml') {
         const $ = cheerio.load(content);
         await render(url, $);
-        //admin(url, $);
+        admin(url, $);
         content = $.html();
       }
 
@@ -93,6 +96,22 @@ function seams({dir, connection}) {
 
     });
     
+  }
+
+  function post(request, response) {
+    let body = '';
+    request.on('data', data => body += data);
+    request.on('end', () => {
+      const json = JSON.parse(body.toString());
+      save(request.url, json);
+    });
+  }
+
+  return function(request, response) {
+    switch(request.method) {
+      case 'GET': get(request, response); break;
+      case 'POST': post(request, response); break;
+    }
   }
 
 }
