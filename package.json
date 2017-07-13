@@ -19,9 +19,6 @@
     "babelify": "^7.3.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
-    "grunt-contrib-uglify": "^3.0.1",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-uglifyjs": "^0.6.2"
+    "grunt-contrib-uglify": "^3.0.1"
   }
 }

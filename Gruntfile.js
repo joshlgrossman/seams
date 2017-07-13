@@ -6,8 +6,8 @@ module.exports = function(grunt) {
 
     browserify: {
       build: {
-        src: 'client/src/admin.new.js',
-        dest: 'client/dist/admin.new.js',
+        src: 'client/src/admin.js',
+        dest: 'client/dist/admin.js',
         options: {
           transform: [[
             'babelify', {
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         files: {
-          'client/dist/admin.new.js': ['client/dist/admin.new.js']
+          'client/dist/admin.js': ['client/dist/admin.js']
         }
       }
     }
