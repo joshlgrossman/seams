@@ -1,7 +1,7 @@
 const fs = require('fs');
 const directives = require('./directives');
 
-const file = fs.readFileSync('./client/dist/admin.js');
+const file = fs.readFileSync('./client/dist/admin.new.js');
 
 function admin(url, $) {
 
