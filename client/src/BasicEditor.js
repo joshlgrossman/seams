@@ -9,7 +9,7 @@ class BasicEditor extends Editor {
 
   render() {
     const input = $('<input>', {
-      className: CLASSNAME + '-input',
+      class: CLASSNAME + '-input',
       type: 'text'
     });
 

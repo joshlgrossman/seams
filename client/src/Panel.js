@@ -5,12 +5,12 @@ class Panel {
 
   constructor() {
     this.loaded = false;
-    this.container = $('<div>', {className: CLASSNAME});
-    this.content = $('<div>', {className: CLASSNAME+'-content'});
+    this.container = $('<div>', {class: CLASSNAME});
+    this.content = $('<div>', {class: CLASSNAME+'-content'});
 
-    const buttons = $('<div>', {className: CLASSNAME+'-btns'});
-    this.saveBtn = $('<button>', {className: CLASSNAME+'-save-btn', text: 'save'});
-    this.cancelBtn = $('<button>', {className: CLASSNAME+'-cancel-btn', text: 'cancel'});
+    const buttons = $('<div>', {class: CLASSNAME+'-btns'});
+    this.saveBtn = $('<button>', {class: CLASSNAME+'-save-btn', text: 'save'});
+    this.cancelBtn = $('<button>', {class: CLASSNAME+'-cancel-btn', text: 'cancel'});
     this.saveBtn.addEventListener('click', this.save.bind(this));
     this.cancelBtn.addEventListener('click', this.cancel.bind(this));
     buttons.appendChild(this.cancelBtn);
