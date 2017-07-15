@@ -4,13 +4,7 @@ const directives = require('./directives');
 const file = fs.readFileSync('./client/dist/admin.js');
 
 function admin(url, $) {
-
-  $('head').prepend(
-    `<script>;!function(directives){${file.toString()}}(['${
-      Object.keys(directives).join('\',\'')
-    }']);</script>`
-  );
-
+  $('head').prepend(`<script>${file.toString()}</script>`);
 }
 
 module.exports = admin;
