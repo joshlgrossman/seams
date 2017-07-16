@@ -30,7 +30,10 @@ var BasicEditor = function (_Editor) {
     value: function render() {
       var _this2 = this;
 
-      var input = $('<input>', { type: 'text', value: this.binding() });
+      var input = $('<input>', {
+        type: 'text',
+        value: this.binding()
+      });
 
       input.addEventListener('input', function () {
         _this2.binding(input.value);
@@ -45,7 +48,7 @@ var BasicEditor = function (_Editor) {
 
 module.exports = BasicEditor;
 
-},{"./Editor":2,"./util":6}],2:[function(require,module,exports){
+},{"./Editor":2,"./util":7}],2:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63,7 +66,7 @@ var Editor = function Editor(element, property) {
 
 module.exports = Editor;
 
-},{"./util":6}],3:[function(require,module,exports){
+},{"./util":7}],3:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -77,6 +80,7 @@ var _require = require('./util'),
     CLASSNAME = _require.CLASSNAME;
 
 var BasicEditor = require('./BasicEditor');
+var TextEditor = require('./TextEditor');
 
 var Panel = function () {
   function Panel() {
@@ -117,6 +121,8 @@ var Panel = function () {
         var editor = void 0;
 
         switch (directive) {
+          case 'content':
+            editor = new TextEditor(el, directive);break;
           default:
             editor = new BasicEditor(el, directive);
         }
@@ -171,7 +177,59 @@ var Panel = function () {
 
 module.exports = Panel;
 
-},{"./BasicEditor":1,"./util":6}],4:[function(require,module,exports){
+},{"./BasicEditor":1,"./TextEditor":4,"./util":7}],4:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = require('./util'),
+    $ = _require.$;
+
+var Editor = require('./Editor');
+
+var TextEditor = function (_Editor) {
+  _inherits(TextEditor, _Editor);
+
+  function TextEditor(element, property) {
+    _classCallCheck(this, TextEditor);
+
+    var _this = _possibleConstructorReturn(this, (TextEditor.__proto__ || Object.getPrototypeOf(TextEditor)).call(this, element, property));
+
+    _this.text = '';
+    return _this;
+  }
+
+  _createClass(TextEditor, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var ta = $('<textarea>', {
+        value: this.binding()
+      });
+
+      this.text = this.binding();
+
+      ta.addEventListener('input', function (e) {
+        _this2.binding(ta.value);
+      });
+
+      return ta;
+    }
+  }]);
+
+  return TextEditor;
+}(Editor);
+
+module.exports = TextEditor;
+
+},{"./Editor":2,"./util":7}],5:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -222,7 +280,7 @@ var UI = function UI(directives) {
 
 module.exports = UI;
 
-},{"./Panel":3,"./util":6}],5:[function(require,module,exports){
+},{"./Panel":3,"./util":7}],6:[function(require,module,exports){
 'use strict';
 
 var UI = require('./UI');
@@ -233,7 +291,7 @@ window.addEventListener('load', function () {
   var ui = new UI(Object.keys(directives));
 });
 
-},{"../../server/directives":7,"./UI":4}],6:[function(require,module,exports){
+},{"../../server/directives":8,"./UI":5}],7:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -373,7 +431,7 @@ module.exports = {
   CLASSNAME: CLASSNAME
 };
 
-},{"../../server/directives":7}],7:[function(require,module,exports){
+},{"../../server/directives":8}],8:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -391,4 +449,4 @@ module.exports = {
   }
 };
 
-},{}]},{},[5]);
+},{}]},{},[6]);

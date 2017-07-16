@@ -1,5 +1,6 @@
 const {bind, $, ajax, CLASSNAME} = require('./util');
 const BasicEditor = require('./BasicEditor');
+const TextEditor = require('./TextEditor');
 
 class Panel {
 
@@ -35,6 +36,7 @@ class Panel {
       let editor;
 
       switch(directive) {
+        case 'content': editor = new TextEditor(el, directive); break;
         default: editor = new BasicEditor(el, directive);
       }
 
