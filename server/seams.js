@@ -38,6 +38,15 @@ function respond200(response, data) {
   response.end();
 }
 
+function respondJSON(response, json) {
+  const content = JSON.stringify(json);
+  const head = {
+    'Content-Type': mimeTypes['.json'],
+    'Content-Length': content.length
+  };
+  respond200(response, {content, head});
+}
+
 function seams({dir, connection}) {
 
   if(connection) db(connection);
@@ -104,6 +113,7 @@ function seams({dir, connection}) {
     request.on('end', () => {
       const json = JSON.parse(body.toString());
       save(request.url, json);
+      respondJSON(response, {success: true});
     });
   }
 
