@@ -9,11 +9,9 @@ class BasicEditor extends Editor {
 
   render() {
     const input = $('<input>', {
-      class: CLASSNAME + '-input',
-      type: 'text'
+      type: 'text', 
+      value: this.binding()
     });
-
-    input.value = this.binding();
 
     input.addEventListener('input', () => {
       this.binding(input.value);

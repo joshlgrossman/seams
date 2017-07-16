@@ -30,12 +30,7 @@ var BasicEditor = function (_Editor) {
     value: function render() {
       var _this2 = this;
 
-      var input = $('<input>', {
-        class: CLASSNAME + '-input',
-        type: 'text'
-      });
-
-      input.value = this.binding();
+      var input = $('<input>', { type: 'text', value: this.binding() });
 
       input.addEventListener('input', function () {
         _this2.binding(input.value);
