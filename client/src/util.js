@@ -1,3 +1,5 @@
+const directives = require('../../server/directives');
+
 class P {
   constructor() {
     this.resolve = function(){};
@@ -18,20 +20,40 @@ class P {
   }
 }
 
+class HTMLWrapper {
+  constructor(el) {
+    this.element = el;
+  }
+
+  html(val) {
+    return typeof val === 'undefined' ?
+      this.element.innerHTML :
+      this.element.innerHTML = val;
+  }
+
+  text(val) {
+    return typeof val === 'undefined' ?
+      this.element.innerText :
+      this.element.innerText = val;
+  }
+
+  attr(key, val) {
+    return typeof val === 'undefined' ?
+      this.element.getAttribute(key) :
+      this.element.setAttribute(key, val)
+  }
+}
+
 function bind(el, property) {
+  const $el = new HTMLWrapper(el);
   return function(val) {
-    if(typeof val !== 'undefined') {
-      switch(property) {
-        case 'content': el.innerHTML = val; break;
-        case 'text': el.innerText = val; break;
-        default: el.setAttribute(property, val);
-      }
+    if(property in directives) return directives[property]($el, val);
+    else if (property in el) {
+      return typeof val === 'undefined' ? 
+        el[property] :
+        el[property] = val;
     } else {
-      switch(property) {
-        case 'content': return el.innerHTML; break;
-        case 'text': return el.innerText; break;
-        default: return el.getAttribute(property);
-      }
+      return $el.attr(property, val);
     }
   }
 }
@@ -56,7 +78,7 @@ function ajax(url, params) {
   const p = new P();
   const xhr = new XMLHttpRequest();
   xhr.open('POST', url, true);
-  xhr.setRequestHeader('Content-type', 'application/json');
+  xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = () => {
     if(xhr.readyState === XMLHttpRequest.DONE) {
       if(xhr.status === 200) {

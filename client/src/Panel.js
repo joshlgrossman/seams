@@ -9,8 +9,8 @@ class Panel {
     this.content = $('<div>', {class: CLASSNAME+'-content'});
 
     const buttons = $('<div>', {class: CLASSNAME+'-btns'});
-    this.saveBtn = $('<button>', {class: CLASSNAME+'-save-btn', text: 'save'});
-    this.cancelBtn = $('<button>', {class: CLASSNAME+'-cancel-btn', text: 'cancel'});
+    this.saveBtn = $('<button>', {class: CLASSNAME+'-save-btn', innerText: 'save'});
+    this.cancelBtn = $('<button>', {class: CLASSNAME+'-cancel-btn', innerText: 'cancel'});
     this.saveBtn.addEventListener('click', this.save.bind(this));
     this.cancelBtn.addEventListener('click', this.cancel.bind(this));
     buttons.appendChild(this.cancelBtn);
