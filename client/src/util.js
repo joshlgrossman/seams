@@ -9,7 +9,7 @@ class P {
     this.resolve = func;
     return this;
   }
-  ['catch'](func) {
+  catch(func) {
     this.reject = func;
     return this;
   }
