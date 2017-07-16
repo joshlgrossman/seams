@@ -9,6 +9,7 @@ const admin = require('./admin');
 const cache = require('./cache');
 const db = require('./db');
 const save = require('./save');
+const alias = require('./alias');
 
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
@@ -53,24 +54,13 @@ function seams({dir, connection}) {
 
   function get(request, response) {
 
-    let url = request.url;
-    if(url === '/') url = '/index.html';
-
-    const start = new Date();
-
-    let fileName = url.match(fileNameRegExp);
-    let fileType = url.match(fileTypeRegExp);
-
-    if(!fileName) {
+    const {url, fileType} = alias(request.url);
+    
+    if(!url && !fileType) {
       respond404(response);
       return;
     }
 
-    if(!fileType) {
-      url += '.html';
-      fileType = ['.html'];
-    } else fileType = fileType[0];
-    
     const cached = cache(url);
     if(cached) {
       respond200(response, cached);
@@ -110,10 +100,14 @@ function seams({dir, connection}) {
   function post(request, response) {
     let body = '';
     request.on('data', data => body += data);
-    request.on('end', () => {
+    request.on('end', async () => {
       const json = JSON.parse(body.toString());
-      save(request.url, json);
-      respondJSON(response, {success: true});
+      try {
+        await save(request.url, json);
+        respondJSON(response, {err: false});
+      } catch (e) {
+        respondJSON(response, {err: true, msg: e.toString()})
+      }
     });
   }
 
