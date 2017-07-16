@@ -1,3 +1,5 @@
+const DEBUG = process.env.DEBUG == 'true';
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
@@ -15,13 +17,18 @@ module.exports = function(grunt) {
             }
           ]]
         }
+      },
+      options: {
+        browserifyOptions: {
+          debug: DEBUG
+        }
       }
     },
 
     uglify: {
       build: {
         files: {
-          'client/dist/admin.js': ['client/dist/admin.js']
+          'client/dist/admin.min.js': ['client/dist/admin.js']
         }
       }
     }

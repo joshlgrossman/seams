@@ -1,1 +1,378 @@
-!function t(e,n,r){function i(a,s){if(!n[a]){if(!e[a]){var c="function"==typeof require&&require;if(!s&&c)return c(a,!0);if(o)return o(a,!0);var u=new Error("Cannot find module '"+a+"'");throw u.code="MODULE_NOT_FOUND",u}var l=n[a]={exports:{}};e[a][0].call(l.exports,function(t){var n=e[a][1][t];return i(n||t)},l,l.exports,t,e,n,r)}return n[a].exports}for(var o="function"==typeof require&&require,a=0;a<r.length;a++)i(r[a]);return i}({1:[function(t,e,n){"use strict";function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function i(t,e){if(!t)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!e||"object"!=typeof e&&"function"!=typeof e?t:e}function o(t,e){if("function"!=typeof e&&null!==e)throw new TypeError("Super expression must either be null or a function, not "+typeof e);t.prototype=Object.create(e&&e.prototype,{constructor:{value:t,enumerable:!1,writable:!0,configurable:!0}}),e&&(Object.setPrototypeOf?Object.setPrototypeOf(t,e):t.__proto__=e)}var a=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),s=t("./util"),c=(s.bind,s.$),u=s.CLASSNAME,l=t("./Editor"),f=function(t){function e(t,n){return r(this,e),i(this,(e.__proto__||Object.getPrototypeOf(e)).call(this,t,n))}return o(e,l),a(e,[{key:"render",value:function(){var t=this,e=c("<input>",{class:u+"-input",type:"text"});return e.value=this.binding(),e.addEventListener("input",function(){t.binding(e.value)}),e}}]),e}();e.exports=f},{"./Editor":2,"./util":6}],2:[function(t,e,n){"use strict";function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}var i=t("./util").bind;e.exports=function t(e,n){r(this,t),this.element=e,this.property=n,this.binding=i(e,n)}},{"./util":6}],3:[function(t,e,n){"use strict";function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}var i=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),o=t("./util"),a=o.bind,s=o.$,c=o.ajax,u=o.CLASSNAME,l=t("./BasicEditor"),f=function(){function t(){r(this,t),this.loaded=!1,this.container=s("<div>",{class:u}),this.content=s("<div>",{class:u+"-content"});var e=s("<div>",{class:u+"-btns"});this.saveBtn=s("<button>",{class:u+"-save-btn",text:"save"}),this.cancelBtn=s("<button>",{class:u+"-cancel-btn",text:"cancel"}),this.saveBtn.addEventListener("click",this.save.bind(this)),this.cancelBtn.addEventListener("click",this.cancel.bind(this)),e.appendChild(this.cancelBtn),e.appendChild(this.saveBtn),this.container.appendChild(this.content),this.container.appendChild(e)}return i(t,[{key:"show",value:function(t,e){var n=this;this.loaded||(document.body.appendChild(this.container),this.loaded=!0),this.content.innerHTML="",this.previous={},this.mapping={},this.element=t,e.forEach(function(e){var r=void 0;r=new l(t,e),n.previous[e]=r.binding(),n.mapping[e]=t.dataset[e],n.content.appendChild(r.render())}),this.container.style="display:block"}},{key:"hide",value:function(){this.container.style="display:none"}},{key:"save",value:function(){var t={};for(var e in this.mapping)t[this.mapping[e]]=a(this.element,e)();c(window.location.pathname,t),this.hide()}},{key:"cancel",value:function(){for(var t in this.previous)a(this.element,t)(this.previous[t]);this.hide()}}]),t}();e.exports=f},{"./BasicEditor":1,"./util":6}],4:[function(t,e,n){"use strict";function r(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}var i=t("./Panel");e.exports=function t(e){var n=this;r(this,t),this.panel=new i;for(var o=[],a=0,s=0;s<e.length;s++)for(var c=e[s],u=document.querySelectorAll("*[data-"+e[s]+"]"),l=0;l<u.length;l++){var f=u[l];f.dataset.seamsId?o[f.dataset.seamsId].directives.push(c):(f.dataset.seamsId=a,o[a++]={el:f,directives:[c]})}o.forEach(function(t){var e=t.el,r=t.directives;e.addEventListener("click",function(t){n.panel.show(e,r),t.stopPropagation(),t.preventDefault()})})}},{"./Panel":3}],5:[function(t,e,n){"use strict";var r=t("./UI"),i=t("../../server/directives");window.addEventListener("load",function(){new r(Object.keys(i))})},{"../../server/directives":7,"./UI":4}],6:[function(t,e,n){"use strict";function r(t){if(Array.isArray(t)){for(var e=0,n=Array(t.length);e<t.length;e++)n[e]=t[e];return n}return Array.from(t)}function i(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}function o(t,e){return function(n){if(void 0!==n)switch(e){case"content":t.innerHTML=n;break;case"text":t.innerText=n;break;default:t.setAttribute(e,n)}else switch(e){case"content":return t.innerHTML;case"text":return t.innerText;default:return t.getAttribute(e)}}}var a=function(){function t(t,e){for(var n=0;n<e.length;n++){var r=e[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(t,r.key,r)}}return function(e,n,r){return n&&t(e.prototype,n),r&&t(e,r),e}}(),s=function(){function t(){i(this,t),this.resolve=function(){},this.reject=function(){}}return a(t,[{key:"then",value:function(t){return this.resolve=t,this}},{key:"catch",value:function(t){return this.reject=t,this}}],[{key:"resolve",value:function(e){var n=new t;return setTimeout(function(){return n.resolve(e)},0),n}}]),t}();e.exports={P:s,bind:o,$:function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(!~t.indexOf("<"))return[].concat(r(document.querySelectorAll(t)));var n=document.createElement(t.replace(/\<|\>/g,""));for(var i in e)o(n,i)(e[i]);return n},ajax:function(t,e){if(t){var n=new s,r=new XMLHttpRequest;return r.open("POST",t,!0),r.setRequestHeader("Content-type","application/json"),r.onreadystatechange=function(){if(r.readyState===XMLHttpRequest.DONE)if(200===r.status)try{n.resolve(JSON.parse(r.responseText))}catch(t){n.reject(t)}else n.reject(r.status)},r.send(JSON.stringify(e)),n}},CLASSNAME:"seams-admin-panel"}},{}],7:[function(t,e,n){"use strict";e.exports={content:function(t,e){return t.html(e)},src:function(t,e){return t.attr("src",e)},href:function(t,e){return t.attr("href",e)}}},{}]},{},[5]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _require = require('./util'),
+    bind = _require.bind,
+    $ = _require.$,
+    CLASSNAME = _require.CLASSNAME;
+
+var Editor = require('./Editor');
+
+var BasicEditor = function (_Editor) {
+  _inherits(BasicEditor, _Editor);
+
+  function BasicEditor(element, property) {
+    _classCallCheck(this, BasicEditor);
+
+    return _possibleConstructorReturn(this, (BasicEditor.__proto__ || Object.getPrototypeOf(BasicEditor)).call(this, element, property));
+  }
+
+  _createClass(BasicEditor, [{
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var input = $('<input>', {
+        class: CLASSNAME + '-input',
+        type: 'text'
+      });
+
+      input.value = this.binding();
+
+      input.addEventListener('input', function () {
+        _this2.binding(input.value);
+      });
+
+      return input;
+    }
+  }]);
+
+  return BasicEditor;
+}(Editor);
+
+module.exports = BasicEditor;
+
+},{"./Editor":2,"./util":6}],2:[function(require,module,exports){
+'use strict';
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = require('./util'),
+    bind = _require.bind;
+
+var Editor = function Editor(element, property) {
+  _classCallCheck(this, Editor);
+
+  this.element = element;
+  this.property = property;
+  this.binding = bind(element, property);
+};
+
+module.exports = Editor;
+
+},{"./util":6}],3:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _require = require('./util'),
+    bind = _require.bind,
+    $ = _require.$,
+    ajax = _require.ajax,
+    CLASSNAME = _require.CLASSNAME;
+
+var BasicEditor = require('./BasicEditor');
+
+var Panel = function () {
+  function Panel() {
+    _classCallCheck(this, Panel);
+
+    this.loaded = false;
+    this.container = $('<div>', { class: CLASSNAME });
+    this.content = $('<div>', { class: CLASSNAME + '-content' });
+
+    var buttons = $('<div>', { class: CLASSNAME + '-btns' });
+    this.saveBtn = $('<button>', { class: CLASSNAME + '-save-btn', innerText: 'save' });
+    this.cancelBtn = $('<button>', { class: CLASSNAME + '-cancel-btn', innerText: 'cancel' });
+    this.saveBtn.addEventListener('click', this.save.bind(this));
+    this.cancelBtn.addEventListener('click', this.cancel.bind(this));
+    buttons.appendChild(this.cancelBtn);
+    buttons.appendChild(this.saveBtn);
+
+    this.container.appendChild(this.content);
+    this.container.appendChild(buttons);
+  }
+
+  _createClass(Panel, [{
+    key: 'show',
+    value: function show(el, directives) {
+      var _this = this;
+
+      if (!this.loaded) {
+        document.body.appendChild(this.container);
+        this.loaded = true;
+      }
+
+      this.content.innerHTML = '';
+      this.previous = {};
+      this.mapping = {};
+      this.element = el;
+
+      directives.forEach(function (directive) {
+        var editor = void 0;
+
+        switch (directive) {
+          default:
+            editor = new BasicEditor(el, directive);
+        }
+
+        _this.previous[directive] = editor.binding();
+        _this.mapping[directive] = el.dataset[directive];
+
+        _this.content.appendChild(editor.render());
+      });
+
+      this.container.style = 'display:block';
+    }
+  }, {
+    key: 'hide',
+    value: function hide() {
+      this.container.style = 'display:none';
+    }
+  }, {
+    key: 'save',
+    value: function save() {
+      var params = {};
+
+      for (var directive in this.mapping) {
+        var content = this.mapping[directive];
+        params[content] = bind(this.element, directive)();
+      }
+
+      ajax(window.location.pathname, params);
+      this.hide();
+    }
+  }, {
+    key: 'cancel',
+    value: function cancel() {
+      for (var directive in this.previous) {
+        bind(this.element, directive)(this.previous[directive]);
+      }
+      this.hide();
+    }
+  }]);
+
+  return Panel;
+}();
+
+module.exports = Panel;
+
+},{"./BasicEditor":1,"./util":6}],4:[function(require,module,exports){
+'use strict';
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Panel = require('./Panel');
+
+var UI = function UI(directives) {
+  var _this = this;
+
+  _classCallCheck(this, UI);
+
+  this.panel = new Panel();
+
+  var nodes = [];
+  var id = 0;
+
+  for (var i = 0; i < directives.length; i++) {
+    var directive = directives[i];
+    var els = document.querySelectorAll('*[data-' + directives[i] + ']');
+
+    for (var j = 0; j < els.length; j++) {
+      var el = els[j];
+
+      if (el.dataset.seamsId) {
+        nodes[el.dataset.seamsId].directives.push(directive);
+      } else {
+        el.dataset.seamsId = id;
+        nodes[id++] = { el: el, directives: [directive] };
+      }
+    }
+  }
+
+  nodes.forEach(function (_ref) {
+    var el = _ref.el,
+        directives = _ref.directives;
+
+
+    el.addEventListener('click', function (evt) {
+      _this.panel.show(el, directives);
+      evt.stopPropagation();
+      evt.preventDefault();
+    });
+  });
+};
+
+module.exports = UI;
+
+},{"./Panel":3}],5:[function(require,module,exports){
+'use strict';
+
+var UI = require('./UI');
+var directives = require('../../server/directives');
+
+window.addEventListener('load', function () {
+
+  var ui = new UI(Object.keys(directives));
+});
+
+},{"../../server/directives":7,"./UI":4}],6:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var directives = require('../../server/directives');
+
+var P = function () {
+  function P() {
+    _classCallCheck(this, P);
+
+    this.resolve = function () {};
+    this.reject = function () {};
+  }
+
+  _createClass(P, [{
+    key: 'then',
+    value: function then(func) {
+      this.resolve = func;
+      return this;
+    }
+  }, {
+    key: 'catch',
+    value: function _catch(func) {
+      this.reject = func;
+      return this;
+    }
+  }], [{
+    key: 'resolve',
+    value: function resolve(val) {
+      var p = new P();
+      setTimeout(function () {
+        return p.resolve(val);
+      }, 0);
+      return p;
+    }
+  }]);
+
+  return P;
+}();
+
+var HTMLWrapper = function () {
+  function HTMLWrapper(el) {
+    _classCallCheck(this, HTMLWrapper);
+
+    this.element = el;
+  }
+
+  _createClass(HTMLWrapper, [{
+    key: 'html',
+    value: function html(val) {
+      return typeof val === 'undefined' ? this.element.innerHTML : this.element.innerHTML = val;
+    }
+  }, {
+    key: 'text',
+    value: function text(val) {
+      return typeof val === 'undefined' ? this.element.innerText : this.element.innerText = val;
+    }
+  }, {
+    key: 'attr',
+    value: function attr(key, val) {
+      return typeof val === 'undefined' ? this.element.getAttribute(key) : this.element.setAttribute(key, val);
+    }
+  }]);
+
+  return HTMLWrapper;
+}();
+
+function bind(el, property) {
+  var $el = new HTMLWrapper(el);
+  return function (val) {
+    if (property in directives) return directives[property]($el, val);else if (property in el) {
+      return typeof val === 'undefined' ? el[property] : el[property] = val;
+    } else {
+      return $el.attr(property, val);
+    }
+  };
+}
+
+function $(tagOrSelector) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+  if (!~tagOrSelector.indexOf('<')) return [].concat(_toConsumableArray(document.querySelectorAll(tagOrSelector)));
+
+  var el = document.createElement(tagOrSelector.replace(/\<|\>/g, ''));
+  for (var key in options) {
+    bind(el, key)(options[key]);
+  }
+
+  return el;
+}
+
+function ajax(url, params) {
+
+  if (!url) return;
+
+  var p = new P();
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        try {
+          p.resolve(JSON.parse(xhr.responseText));
+        } catch (e) {
+          p.reject(e);
+        }
+      } else p.reject(xhr.status);
+    }
+  };
+  xhr.send(JSON.stringify(params));
+
+  return p;
+}
+
+var CLASSNAME = 'seams-admin-panel';
+
+module.exports = {
+  P: P,
+  bind: bind,
+  $: $,
+  ajax: ajax,
+  CLASSNAME: CLASSNAME
+};
+
+},{"../../server/directives":7}],7:[function(require,module,exports){
+'use strict';
+
+module.exports = {
+  'content': function content($el, _content) {
+    return _content === undefined ? $el.html() : $el.html(_content);
+  },
+  'text': function text($el, content) {
+    return content === undefined ? $el.text() : $el.text(content);
+  },
+  'src': function src($el, content) {
+    return content === undefined ? $el.attr('src') : $el.attr('src', content);
+  },
+  'href': function href($el, content) {
+    return content === undefined ? $el.attr('href') : $el.attr('href', content);
+  }
+};
+
+},{}]},{},[5]);
