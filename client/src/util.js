@@ -92,6 +92,14 @@ function ajax(url, params) {
   return p;
 }
 
+function session(obj) {
+  if(typeof obj === 'undefined') {
+    return JSON.parse(sessionStorage.getItem('seams-admin'));
+  } else {
+    sessionStorage.setItem('seams-admin', JSON.stringify(obj));
+  }
+}
+
 const CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
@@ -99,5 +107,6 @@ module.exports = {
   bind,
   $,
   ajax,
+  session,
   CLASSNAME
 };

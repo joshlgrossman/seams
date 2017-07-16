@@ -350,6 +350,14 @@ function ajax(url, params) {
   return p;
 }
 
+function session(obj) {
+  if (typeof obj === 'undefined') {
+    return JSON.parse(sessionStorage.getItem('seams-admin'));
+  } else {
+    sessionStorage.setItem('seams-admin', JSON.stringify(obj));
+  }
+}
+
 var CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
@@ -357,6 +365,7 @@ module.exports = {
   bind: bind,
   $: $,
   ajax: ajax,
+  session: session,
   CLASSNAME: CLASSNAME
 };
 
