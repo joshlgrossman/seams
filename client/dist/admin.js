@@ -118,7 +118,7 @@ var Panel = function () {
       this.mapping = {};
       this.element = el;
 
-      directives.forEach(function (directive) {
+      directives.forEach(function (directive, i) {
         var editor = void 0;
 
         switch (directive) {
@@ -129,7 +129,16 @@ var Panel = function () {
         _this.previous[directive] = editor.binding();
         _this.mapping[directive] = el.dataset[directive];
 
-        _this.content.appendChild(editor.render());
+        var id = CLASSNAME + '-editor' + i;
+        var input = editor.render();
+        var label = $('<label>', { 'for': id, innerText: directive });
+        input.setAttribute('id', id);
+
+        var container = $('<div>', { class: CLASSNAME + '-editor' });
+        container.appendChild(label);
+        container.appendChild(input);
+
+        _this.content.appendChild(container);
       });
 
       this.container.style = 'display:block';

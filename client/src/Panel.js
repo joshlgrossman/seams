@@ -31,7 +31,7 @@ class Panel {
     this.mapping = {};
     this.element = el;
 
-    directives.forEach(directive => {
+    directives.forEach((directive, i) => {
       let editor;
 
       switch(directive) {
@@ -41,7 +41,16 @@ class Panel {
       this.previous[directive] = editor.binding();
       this.mapping[directive] = el.dataset[directive];
 
-      this.content.appendChild(editor.render());
+      const id = CLASSNAME + '-editor' + i;
+      const input = editor.render();
+      const label = $('<label>', {'for': id, innerText: directive});
+      input.setAttribute('id', id);
+
+      const container = $('<div>', {class: CLASSNAME + '-editor'});
+      container.appendChild(label);
+      container.appendChild(input);
+
+      this.content.appendChild(container);
 
     });
 
