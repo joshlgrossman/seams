@@ -172,6 +172,9 @@ module.exports = Panel;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _require = require('./util'),
+    $ = _require.$;
+
 var Panel = require('./Panel');
 
 var UI = function UI(directives) {
@@ -184,20 +187,20 @@ var UI = function UI(directives) {
   var nodes = [];
   var id = 0;
 
-  for (var i = 0; i < directives.length; i++) {
+  var _loop = function _loop(i) {
     var directive = directives[i];
-    var els = document.querySelectorAll('*[data-' + directives[i] + ']');
 
-    for (var j = 0; j < els.length; j++) {
-      var el = els[j];
-
+    $('*[data-' + directives[i] + ']').forEach(function (el) {
       if (el.dataset.seamsId) {
         nodes[el.dataset.seamsId].directives.push(directive);
       } else {
-        el.dataset.seamsId = id;
-        nodes[id++] = { el: el, directives: [directive] };
+        nodes[el.dataset.seamsId = id++] = { el: el, directives: [directive] };
       }
-    }
+    });
+  };
+
+  for (var i = 0; i < directives.length; i++) {
+    _loop(i);
   }
 
   nodes.forEach(function (_ref) {
@@ -215,7 +218,7 @@ var UI = function UI(directives) {
 
 module.exports = UI;
 
-},{"./Panel":3}],5:[function(require,module,exports){
+},{"./Panel":3,"./util":6}],5:[function(require,module,exports){
 'use strict';
 
 var UI = require('./UI');

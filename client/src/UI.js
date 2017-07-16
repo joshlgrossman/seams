@@ -1,3 +1,4 @@
+const {$} = require('./util');
 const Panel = require('./Panel');
 
 class UI {
@@ -10,19 +11,14 @@ class UI {
 
     for(let i = 0; i < directives.length; i++) {
       const directive = directives[i];
-      const els = document.querySelectorAll(`*[data-${directives[i]}]`);
 
-      for(let j = 0; j < els.length; j++) {
-        const el = els[j];
-
+      $(`*[data-${directives[i]}]`).forEach(el => {
         if(el.dataset.seamsId) {
           nodes[el.dataset.seamsId].directives.push(directive)
         } else {
-          el.dataset.seamsId = id;
-          nodes[id++] = {el, directives: [directive]};
+          nodes[el.dataset.seamsId = id++] = {el, directives: [directive]};
         }
-      }
-
+      });
     }
 
     nodes.forEach(({el, directives}) => {
