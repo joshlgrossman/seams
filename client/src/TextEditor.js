@@ -1,6 +1,24 @@
 const {$} = require('./util');
 const Editor = require('./Editor');
 
+const evals = {
+  heading: /(#+)(.*?)#+/g,
+  italic: /_(.+)_/g,
+  bold: /\*(.+)\*/g,
+  link: /\[(.+?)\]\((.+?)\)/g,
+  monospace: /`(.+)`/g,
+  linebreak: /\n\n/g
+};
+
+const unevals = {
+  heading: /<h(\d)>(.*)<\/h\d>/g,
+  italic: /<i>(.*)<\/i>/g,
+  bold: /<strong>(.*)<\/strong>/g,
+  link: /<a href="([^"]*)">(.*?)<\/a>/g,
+  monospace: /<code>(.*)<\/code>/g,
+  linebreak: /<br>/g
+};
+
 class TextEditor extends Editor {
 
   constructor(element, property) {
@@ -8,15 +26,43 @@ class TextEditor extends Editor {
     this.text = '';
   }
 
+  eval(str) {
+
+    return str.replace(evals.italic, '<i>$1</i>')
+      .replace(evals.bold, '<strong>$1</strong>')
+      .replace(evals.link, '<a href="$2">$1</a>')
+      .replace(evals.monospace, '<code>$1</code>')
+      .replace(evals.linebreak, '<br>')
+      .replace(evals.heading, (match, p1, p2) => {
+        const num = p1.length;
+        return `<h${num}>${p2}</h${num}>`;
+      });
+
+  }
+
+  uneval(str) {
+
+    return str.replace(unevals.italic, '_$1_')
+      .replace(unevals.bold, '*$1*')
+      .replace(unevals.link, '[$2]($1)')
+      .replace(unevals.monospace, '`$1`')
+      .replace(unevals.linebreak, '\n\n')
+      .replace(unevals.heading, (match, p1, p2) => {
+        let num = +p1;
+        let s = '';
+        while(num-- > 0) s += '#';
+        return `${s}${p2}#\n`;
+      });
+
+  }
+
   render() {
     const ta = $('<textarea>', {
-      value: this.binding()
+      value: this.uneval(this.binding())
     });
 
-    this.text = this.binding();
-
     ta.addEventListener('input', e => {
-      this.binding(ta.value);
+      this.binding(this.eval(ta.value));
     });
 
     return ta;

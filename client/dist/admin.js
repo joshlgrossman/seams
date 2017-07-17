@@ -193,6 +193,24 @@ var _require = require('./util'),
 
 var Editor = require('./Editor');
 
+var evals = {
+  heading: /(#+)(.*?)#+/g,
+  italic: /_(.+)_/g,
+  bold: /\*(.+)\*/g,
+  link: /\[(.+?)\]\((.+?)\)/g,
+  monospace: /`(.+)`/g,
+  linebreak: /\n\n/g
+};
+
+var unevals = {
+  heading: /<h(\d)>(.*)<\/h\d>/g,
+  italic: /<i>(.*)<\/i>/g,
+  bold: /<strong>(.*)<\/strong>/g,
+  link: /<a href="([^"]*)">(.*?)<\/a>/g,
+  monospace: /<code>(.*)<\/code>/g,
+  linebreak: /<br>/g
+};
+
 var TextEditor = function (_Editor) {
   _inherits(TextEditor, _Editor);
 
@@ -206,18 +224,37 @@ var TextEditor = function (_Editor) {
   }
 
   _createClass(TextEditor, [{
+    key: 'eval',
+    value: function _eval(str) {
+
+      return str.replace(evals.italic, '<i>$1</i>').replace(evals.bold, '<strong>$1</strong>').replace(evals.link, '<a href="$2">$1</a>').replace(evals.monospace, '<code>$1</code>').replace(evals.linebreak, '<br>').replace(evals.heading, function (match, p1, p2) {
+        var num = p1.length;
+        return '<h' + num + '>' + p2 + '</h' + num + '>';
+      });
+    }
+  }, {
+    key: 'uneval',
+    value: function uneval(str) {
+
+      return str.replace(unevals.italic, '_$1_').replace(unevals.bold, '*$1*').replace(unevals.link, '[$2]($1)').replace(unevals.monospace, '`$1`').replace(unevals.linebreak, '\n\n').replace(unevals.heading, function (match, p1, p2) {
+        var num = +p1;
+        var s = '';
+        while (num-- > 0) {
+          s += '#';
+        }return '' + s + p2 + '#\n';
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
 
       var ta = $('<textarea>', {
-        value: this.binding()
+        value: this.uneval(this.binding())
       });
 
-      this.text = this.binding();
-
       ta.addEventListener('input', function (e) {
-        _this2.binding(ta.value);
+        _this2.binding(_this2.eval(ta.value));
       });
 
       return ta;
@@ -412,11 +449,11 @@ function ajax(url, params) {
   return p;
 }
 
-function session(obj) {
+function storage(obj) {
   if (typeof obj === 'undefined') {
-    return JSON.parse(sessionStorage.getItem('seams-admin'));
+    return JSON.parse(localStorage.getItem('seams-admin'));
   } else {
-    sessionStorage.setItem('seams-admin', JSON.stringify(obj));
+    localStorage.setItem('seams-admin', JSON.stringify(obj));
   }
 }
 
@@ -427,7 +464,7 @@ module.exports = {
   bind: bind,
   $: $,
   ajax: ajax,
-  session: session,
+  storage: storage,
   CLASSNAME: CLASSNAME
 };
 
