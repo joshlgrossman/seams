@@ -92,11 +92,11 @@ function ajax(url, params) {
   return p;
 }
 
-function session(obj) {
+function storage(obj) {
   if(typeof obj === 'undefined') {
-    return JSON.parse(sessionStorage.getItem('seams-admin'));
+    return JSON.parse(localStorage.getItem('seams-admin'));
   } else {
-    sessionStorage.setItem('seams-admin', JSON.stringify(obj));
+    localStorage.setItem('seams-admin', JSON.stringify(obj));
   }
 }
 
@@ -107,6 +107,6 @@ module.exports = {
   bind,
   $,
   ajax,
-  session,
+  storage,
   CLASSNAME
 };
