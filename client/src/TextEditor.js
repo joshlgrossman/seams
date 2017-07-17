@@ -12,7 +12,7 @@ const evals = {
 
 const unevals = {
   heading: /<h(\d)>(.*)<\/h\d>/g,
-  italic: /<i>(.*)<\/i>/g,
+  italic: /<em>(.*)<\/em>/g,
   bold: /<strong>(.*)<\/strong>/g,
   link: /<a href="([^"]*)">(.*?)<\/a>/g,
   monospace: /<code>(.*)<\/code>/g,
@@ -28,7 +28,7 @@ class TextEditor extends Editor {
 
   eval(str) {
 
-    return str.replace(evals.italic, '<i>$1</i>')
+    return str.replace(evals.italic, '<em>$1</em>')
       .replace(evals.bold, '<strong>$1</strong>')
       .replace(evals.link, '<a href="$2">$1</a>')
       .replace(evals.monospace, '<code>$1</code>')
