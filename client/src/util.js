@@ -71,13 +71,13 @@ function $(tagOrSelector, options = {}) {
 
 }
 
-function ajax(url, params) {
+function ajax(url, type, params) {
 
   if(!url) return;
 
   const p = new P();
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', url, true);
+  xhr.open(type, url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = () => {
     if(xhr.readyState === XMLHttpRequest.DONE) {
@@ -91,6 +91,9 @@ function ajax(url, params) {
 
   return p;
 }
+ajax.get = (url, params) => ajax(url, 'GET', params);
+ajax.post = (url, params) => ajax(url, 'POST', params);
+ajax.put = (url, params) => ajax(url, 'PUT', params);
 
 function storage(obj) {
   if(typeof obj === 'undefined') {

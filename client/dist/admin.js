@@ -169,7 +169,7 @@ var Panel = function () {
         params[content] = bind(this.element, directive)();
       }
 
-      ajax(window.location.pathname, params);
+      ajax.put(window.location.pathname, params);
       this.hide();
     }
   }, {
@@ -444,13 +444,13 @@ function $(tagOrSelector) {
   return el;
 }
 
-function ajax(url, params) {
+function ajax(url, type, params) {
 
   if (!url) return;
 
   var p = new P();
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', url, true);
+  xhr.open(type, url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -467,6 +467,15 @@ function ajax(url, params) {
 
   return p;
 }
+ajax.get = function (url, params) {
+  return ajax(url, 'GET', params);
+};
+ajax.post = function (url, params) {
+  return ajax(url, 'POST', params);
+};
+ajax.put = function (url, params) {
+  return ajax(url, 'PUT', params);
+};
 
 function storage(obj) {
   if (typeof obj === 'undefined') {

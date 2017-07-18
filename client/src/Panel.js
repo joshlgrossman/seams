@@ -79,7 +79,7 @@ class Panel {
       params[content] = bind(this.element, directive)();
     }
 
-    ajax(window.location.pathname, params)
+    ajax.put(window.location.pathname, params)
     this.hide();
   }
 
