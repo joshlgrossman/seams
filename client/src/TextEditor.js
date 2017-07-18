@@ -61,8 +61,12 @@ class TextEditor extends Editor {
   }
 
   render() {
+    const value = this.uneval(this.binding());
+    const height = (1 + value.split('\n').length) * 20;
+
     const ta = $('<textarea>', {
-      value: this.uneval(this.binding())
+      value,
+      style: `height:${height}px`
     });
 
     ta.addEventListener('input', e => {

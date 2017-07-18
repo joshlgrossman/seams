@@ -261,8 +261,12 @@ var TextEditor = function (_Editor) {
     value: function render() {
       var _this2 = this;
 
+      var value = this.uneval(this.binding());
+      var height = (1 + value.split('\n').length) * 20;
+
       var ta = $('<textarea>', {
-        value: this.uneval(this.binding())
+        value: value,
+        style: 'height:' + height + 'px'
       });
 
       ta.addEventListener('input', function (e) {
