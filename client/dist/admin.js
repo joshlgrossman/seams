@@ -262,7 +262,10 @@ var TextEditor = function (_Editor) {
       var _this2 = this;
 
       var value = this.uneval(this.binding());
-      var height = (1 + value.split('\n').length) * 20;
+      var lines = value.split('\n') || [];
+      var height = (1 + lines.length + lines.reduce(function (r, v) {
+        return r + v.length / 40 | 0;
+      }, 0)) * 20;
 
       var ta = $('<textarea>', {
         value: value,

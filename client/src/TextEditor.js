@@ -62,7 +62,8 @@ class TextEditor extends Editor {
 
   render() {
     const value = this.uneval(this.binding());
-    const height = (1 + value.split('\n').length) * 20;
+    const lines = value.split('\n') || [];
+    const height = (1 + lines.length + lines.reduce((r,v) => r + (v.length/40)|0,0)) * 20;
 
     const ta = $('<textarea>', {
       value,
