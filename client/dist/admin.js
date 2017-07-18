@@ -253,7 +253,7 @@ var TextEditor = function (_Editor) {
         var s = '';
         while (num-- > 0) {
           s += '#';
-        }return '' + s + p2 + '#\n';
+        }return '' + s + p2 + '#';
       });
     }
   }, {

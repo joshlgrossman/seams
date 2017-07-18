@@ -55,7 +55,7 @@ class TextEditor extends Editor {
         let num = +p1;
         let s = '';
         while(num-- > 0) s += '#';
-        return `${s}${p2}#\n`;
+        return `${s}${p2}#`;
       });
 
   }
