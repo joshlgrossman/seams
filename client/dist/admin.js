@@ -207,7 +207,7 @@ var evals = {
   heading: /(#+)(.*?)#+/g,
   italic: /_(.+?)_/g,
   bold: /\*(.+?)\*/g,
-  link: /[^!]\[(.+?)\]\((.+?)\)/g,
+  link: /([^!])\[(.+?)\]\((.+?)\)/g,
   monospace: /`(.+?)`/g,
   linebreak: /\n\n/g,
   image: /\!\[(.+?)\]\((.+?)\)/g
@@ -239,7 +239,7 @@ var TextEditor = function (_Editor) {
     key: 'eval',
     value: function _eval(str) {
 
-      return str.replace(evals.italic, '<em>$1</em>').replace(evals.bold, '<strong>$1</strong>').replace(evals.link, '<a href="$2">$1</a>').replace(evals.monospace, '<code>$1</code>').replace(evals.linebreak, '<br>').replace(evals.image, '<img src="$2" alt="$1">').replace(evals.heading, function (match, p1, p2) {
+      return str.replace(evals.italic, '<em>$1</em>').replace(evals.bold, '<strong>$1</strong>').replace(evals.link, '$1<a href="$3">$2</a>').replace(evals.monospace, '<code>$1</code>').replace(evals.linebreak, '<br>').replace(evals.image, '<img src="$2" alt="$1">').replace(evals.heading, function (match, p1, p2) {
         var num = p1.length;
         return '<h' + num + '>' + p2 + '</h' + num + '>';
       });

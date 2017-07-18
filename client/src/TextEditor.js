@@ -5,7 +5,7 @@ const evals = {
   heading: /(#+)(.*?)#+/g,
   italic: /_(.+?)_/g,
   bold: /\*(.+?)\*/g,
-  link: /[^!]\[(.+?)\]\((.+?)\)/g,
+  link: /([^!])\[(.+?)\]\((.+?)\)/g,
   monospace: /`(.+?)`/g,
   linebreak: /\n\n/g,
   image: /\!\[(.+?)\]\((.+?)\)/g
@@ -32,7 +32,7 @@ class TextEditor extends Editor {
 
     return str.replace(evals.italic, '<em>$1</em>')
       .replace(evals.bold, '<strong>$1</strong>')
-      .replace(evals.link, '<a href="$2">$1</a>')
+      .replace(evals.link, '$1<a href="$3">$2</a>')
       .replace(evals.monospace, '<code>$1</code>')
       .replace(evals.linebreak, '<br>')
       .replace(evals.image, '<img src="$2" alt="$1">')
