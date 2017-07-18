@@ -3,19 +3,19 @@ const Editor = require('./Editor');
 
 const evals = {
   heading: /(#+)(.*?)#+/g,
-  italic: /_(.+)_/g,
-  bold: /\*(.+)\*/g,
+  italic: /_(.+?)_/g,
+  bold: /\*(.+?)\*/g,
   link: /\[(.+?)\]\((.+?)\)/g,
-  monospace: /`(.+)`/g,
+  monospace: /`(.+?)`/g,
   linebreak: /\n\n/g
 };
 
 const unevals = {
-  heading: /<h(\d)>(.*)<\/h\d>/g,
-  italic: /<em>(.*)<\/em>/g,
-  bold: /<strong>(.*)<\/strong>/g,
+  heading: /<h(\d)>(.*?)<\/h\d>/g,
+  italic: /<em>(.*?)<\/em>/g,
+  bold: /<strong>(.*?)<\/strong>/g,
   link: /<a href="([^"]*)">(.*?)<\/a>/g,
-  monospace: /<code>(.*)<\/code>/g,
+  monospace: /<code>(.*?)<\/code>/g,
   linebreak: /<br>/g
 };
 
