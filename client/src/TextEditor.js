@@ -5,9 +5,10 @@ const evals = {
   heading: /(#+)(.*?)#+/g,
   italic: /_(.+?)_/g,
   bold: /\*(.+?)\*/g,
-  link: /\[(.+?)\]\((.+?)\)/g,
+  link: /[^!]\[(.+?)\]\((.+?)\)/g,
   monospace: /`(.+?)`/g,
-  linebreak: /\n\n/g
+  linebreak: /\n\n/g,
+  image: /\!\[(.+?)\]\((.+?)\)/g
 };
 
 const unevals = {
@@ -16,7 +17,8 @@ const unevals = {
   bold: /<strong>(.*?)<\/strong>/g,
   link: /<a href="([^"]*)">(.*?)<\/a>/g,
   monospace: /<code>(.*?)<\/code>/g,
-  linebreak: /<br>/g
+  linebreak: /<br>/g,
+  image: /<img src="([^"]*)" alt="([^"]*)">/g,
 };
 
 class TextEditor extends Editor {
@@ -33,6 +35,7 @@ class TextEditor extends Editor {
       .replace(evals.link, '<a href="$2">$1</a>')
       .replace(evals.monospace, '<code>$1</code>')
       .replace(evals.linebreak, '<br>')
+      .replace(evals.image, '<img src="$2" alt="$1">')
       .replace(evals.heading, (match, p1, p2) => {
         const num = p1.length;
         return `<h${num}>${p2}</h${num}>`;
@@ -47,6 +50,7 @@ class TextEditor extends Editor {
       .replace(unevals.link, '[$2]($1)')
       .replace(unevals.monospace, '`$1`')
       .replace(unevals.linebreak, '\n\n')
+      .replace(unevals.image, '![$2]($1)')
       .replace(unevals.heading, (match, p1, p2) => {
         let num = +p1;
         let s = '';

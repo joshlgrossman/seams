@@ -207,9 +207,10 @@ var evals = {
   heading: /(#+)(.*?)#+/g,
   italic: /_(.+?)_/g,
   bold: /\*(.+?)\*/g,
-  link: /\[(.+?)\]\((.+?)\)/g,
+  link: /[^!]\[(.+?)\]\((.+?)\)/g,
   monospace: /`(.+?)`/g,
-  linebreak: /\n\n/g
+  linebreak: /\n\n/g,
+  image: /\!\[(.+?)\]\((.+?)\)/g
 };
 
 var unevals = {
@@ -218,7 +219,8 @@ var unevals = {
   bold: /<strong>(.*?)<\/strong>/g,
   link: /<a href="([^"]*)">(.*?)<\/a>/g,
   monospace: /<code>(.*?)<\/code>/g,
-  linebreak: /<br>/g
+  linebreak: /<br>/g,
+  image: /<img src="([^"]*)" alt="([^"]*)">/g
 };
 
 var TextEditor = function (_Editor) {
@@ -237,7 +239,7 @@ var TextEditor = function (_Editor) {
     key: 'eval',
     value: function _eval(str) {
 
-      return str.replace(evals.italic, '<em>$1</em>').replace(evals.bold, '<strong>$1</strong>').replace(evals.link, '<a href="$2">$1</a>').replace(evals.monospace, '<code>$1</code>').replace(evals.linebreak, '<br>').replace(evals.heading, function (match, p1, p2) {
+      return str.replace(evals.italic, '<em>$1</em>').replace(evals.bold, '<strong>$1</strong>').replace(evals.link, '<a href="$2">$1</a>').replace(evals.monospace, '<code>$1</code>').replace(evals.linebreak, '<br>').replace(evals.image, '<img src="$2" alt="$1">').replace(evals.heading, function (match, p1, p2) {
         var num = p1.length;
         return '<h' + num + '>' + p2 + '</h' + num + '>';
       });
@@ -246,7 +248,7 @@ var TextEditor = function (_Editor) {
     key: 'uneval',
     value: function uneval(str) {
 
-      return str.replace(unevals.italic, '_$1_').replace(unevals.bold, '*$1*').replace(unevals.link, '[$2]($1)').replace(unevals.monospace, '`$1`').replace(unevals.linebreak, '\n\n').replace(unevals.heading, function (match, p1, p2) {
+      return str.replace(unevals.italic, '_$1_').replace(unevals.bold, '*$1*').replace(unevals.link, '[$2]($1)').replace(unevals.monospace, '`$1`').replace(unevals.linebreak, '\n\n').replace(unevals.image, '![$2]($1)').replace(unevals.heading, function (match, p1, p2) {
         var num = +p1;
         var s = '';
         while (num-- > 0) {
