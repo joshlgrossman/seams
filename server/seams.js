@@ -52,10 +52,11 @@ function adminCookie(str) {
   return str.replace(/(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 }
 
-function seams({dir, connection, secret}) {
+function seams({dir, connection, secret, expires}) {
 
   if(connection) db(connection);
   const jwt = auth(secret);
+  const responseCache = cache(expires);
 
   function get(request, response) {
 
@@ -68,7 +69,7 @@ function seams({dir, connection, secret}) {
       return;
     }
 
-    const cached = cache(url);
+    const cached = responseCache(url);
     if(!token && cached) {
       respond200(response, cached);
       return;
@@ -101,7 +102,7 @@ function seams({dir, connection, secret}) {
 
       respond200(
         response,
-        token ? data : cache(url, data)
+        token ? data : responseCache(url, data)
       );
 
     });

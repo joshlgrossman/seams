@@ -1,24 +1,27 @@
-const content = {};
-const expireTime = process.env.DEBUG ? 10000 : 600000;
+function cache(expires = 300000) {
 
-function cache(url, data) {
+  const content = {};
 
-  const now = new Date();
+  return function(url, data) {
 
-  if(data === undefined) {
+    const now = new Date();
 
-    const cachedData = content[url];
+    if(data === undefined) {
 
-    if(cachedData && (now - cachedData.accessedTime) < expireTime) {
-      cachedData.accessedTime = now;
-      return cachedData;
-    } else return null;
+      const cachedData = content[url];
 
-  } else {
+      if(cachedData && (now - cachedData.accessedTime) < expires) {
+        cachedData.accessedTime = now;
+        return cachedData;
+      } else return null;
 
-    data.accessedTime = now;
-    content[url] = data;
-    return data;
+    } else {
+
+      data.accessedTime = now;
+      content[url] = data;
+      return data;
+
+    }
 
   }
 
