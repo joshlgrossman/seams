@@ -52,10 +52,27 @@ function adminCookie(str) {
   return str.replace(/(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/, '$1');
 }
 
+function parseBody(request) {
+  return new Promise((resolve, reject) => {
+
+    let body = '';
+    request.on('data', data => body += data);
+    request.on('end', () => {
+      try {
+        const json = JSON.parse(body.toString());
+        resolve(json);
+      } catch(e) {
+        reject(e);
+      }
+    });
+
+  });
+}
+
 function seams({dir, connection, secret, expires}) {
 
   if(connection) db(connection);
-  const jwt = auth(secret);
+  const jwt = auth.jwt(secret);
   const responseCache = cache(expires);
 
   function get(request, response) {
@@ -63,7 +80,7 @@ function seams({dir, connection, secret, expires}) {
     const {url, fileType} = alias(request.url);
     const cookie = adminCookie(request.headers.cookie || '');
     const token = jwt.decode(cookie);
-    
+
     if(!url && !fileType) {
       respond404(response);
       return;
@@ -109,23 +126,42 @@ function seams({dir, connection, secret, expires}) {
     
   }
 
-  function post(request, response) {
-    let body = '';
-    request.on('data', data => body += data);
-    request.on('end', async () => {
-      const json = JSON.parse(body.toString());
-      try {
-        await save(request.url, json);
-        respondJSON(response, {err: false});
-      } catch (e) {
-        respondJSON(response, {err: true, msg: e.toString()})
+  async function put(request, response) {
+    try {
+      const json = await parseBody(request);
+      await save(request.url, json);
+      respondJSON(response, {err: false});
+    } catch (e) {
+      respondJSON(response, {err: true, msg: e.toString()})
+    }
+  }
+
+  async function post(request, response) {
+    try {
+      const json = await parseBody(request);
+      const username = await auth.validate(json);
+
+      if(username) {
+        const content = JSON.stringify({name: username});
+        const head = {
+          'Content-Type': mimeTypes['.json'],
+          'Content-Length': content.length,
+          'Set-Cookie': `seams-jwt=${jwt.encode(username)}; Max-Age=28800`
+        };
+        respond200(response, {content, head});
+      } else {
+        respondJSON(response, {err: true});
       }
-    });
+
+    } catch (e) {
+      respondJSON(response, {err: true, msg: e.toString()});
+    }
   }
 
   return function(request, response) {
     switch(request.method) {
       case 'GET': get(request, response); break;
+      case 'PUT': put(request, response); break;
       case 'POST': post(request, response); break;
     }
   }

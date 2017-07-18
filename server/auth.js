@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const db = require('./db');
 
 function base64Encode(json) {
   return new Buffer(JSON.stringify(json)).toString('base64');
@@ -8,7 +9,7 @@ function base64Decode(str) {
   return JSON.parse(new Buffer(str, 'base64').toString('ascii'));
 }
 
-function auth(secret) {
+function jwt(secret) {
 
   function decode(token) {
     
@@ -60,4 +61,45 @@ function auth(secret) {
 
 };
 
-module.exports = auth;
+function validate({name, password}) {
+  return new Promise((resolve, reject) => {
+
+    if(!db.users) reject();
+    else db.users.findOne({name}, (err, doc) => {
+      if(err) reject(err);
+      
+      const {password: hash, salt} = doc;
+      const hmac = crypto.createHmac('sha512', salt);
+      hmac.update(password);
+
+      if(hmac.digest('hex') === hash) resolve(name);
+      else reject(name);
+    });
+
+  });
+}
+
+function create({name, password}) {
+  return new Promise((resolve, reject) => {
+
+    if(!db.users) reject();
+    else {
+      const salt = crypto.randomBytes(8).toString('hex').slice(0, 16);
+      const hmac = crypto.createHmac('sha512', salt);
+      hmac.update(password);
+      const hash = hmac.digest('hex');
+
+      db.users.insertOne({name, salt, password: hash}, (err, doc) => {
+        if(err) reject(err);
+        else resolve(doc);
+      });
+    }
+
+  });
+}
+
+module.exports = {
+  jwt,
+  validate,
+  create
+}
