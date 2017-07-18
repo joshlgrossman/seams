@@ -5,8 +5,9 @@ const TextEditor = require('./TextEditor');
 class Panel {
 
   constructor() {
+    this.side = '-right';
     this.loaded = false;
-    this.container = $('<div>', {class: CLASSNAME});
+    this.container = $('<div>', {id: CLASSNAME, class: CLASSNAME + this.side});
     this.content = $('<div>', {class: CLASSNAME+'-content'});
 
     const buttons = $('<div>', {class: CLASSNAME+'-btns'});
@@ -17,6 +18,13 @@ class Panel {
     buttons.appendChild(this.cancelBtn);
     buttons.appendChild(this.saveBtn);
 
+    const sidebar = $('<div>', {class: CLASSNAME+'-sidebar'});
+    sidebar.addEventListener('click', () => {
+      this.side = this.side === '-right' ? '-left' : '-right';
+      this.container.className = CLASSNAME + this.side;
+    });
+
+    this.container.appendChild(sidebar);
     this.container.appendChild(this.content);
     this.container.appendChild(buttons);
   }
