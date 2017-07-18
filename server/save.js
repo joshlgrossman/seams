@@ -8,8 +8,8 @@ function save(url, data) {
 
   return new Promise((resolve, reject) => {
 
-    if(!db.connection) resolve({});
-    else db.connection.updateOne({url: aliased}, {$set}, (err, result) => {
+    if(!db.contents) resolve({});
+    else db.contents.updateOne({url: aliased}, {$set}, (err, result) => {
       if(err) reject(err);
       else resolve(result ? result.result : {});
     });
