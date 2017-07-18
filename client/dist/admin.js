@@ -476,6 +476,15 @@ function storage(obj) {
   }
 }
 
+function cookie(key, val) {
+  if (typeof val === 'undefined') {
+    document.cookie = key + '=' + val;
+    return val;
+  } else {
+    return document.cookie.replace(new RegExp('(?:(?:^|.*;\\s*)' + key + '\\s*=\\s*([^;]*).*$)|^.*$'), "$1");
+  }
+}
+
 var CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
