@@ -84,10 +84,13 @@ var TextEditor = require('./TextEditor');
 
 var Panel = function () {
   function Panel() {
+    var _this = this;
+
     _classCallCheck(this, Panel);
 
+    this.side = '-right';
     this.loaded = false;
-    this.container = $('<div>', { class: CLASSNAME });
+    this.container = $('<div>', { id: CLASSNAME, class: CLASSNAME + this.side });
     this.content = $('<div>', { class: CLASSNAME + '-content' });
 
     var buttons = $('<div>', { class: CLASSNAME + '-btns' });
@@ -98,6 +101,13 @@ var Panel = function () {
     buttons.appendChild(this.cancelBtn);
     buttons.appendChild(this.saveBtn);
 
+    var sidebar = $('<div>', { class: CLASSNAME + '-sidebar' });
+    sidebar.addEventListener('click', function () {
+      _this.side = _this.side === '-right' ? '-left' : '-right';
+      _this.container.className = CLASSNAME + _this.side;
+    });
+
+    this.container.appendChild(sidebar);
     this.container.appendChild(this.content);
     this.container.appendChild(buttons);
   }
@@ -105,7 +115,7 @@ var Panel = function () {
   _createClass(Panel, [{
     key: 'show',
     value: function show(el, directives) {
-      var _this = this;
+      var _this2 = this;
 
       if (!this.loaded) {
         document.body.appendChild(this.container);
@@ -127,8 +137,8 @@ var Panel = function () {
             editor = new BasicEditor(el, directive);
         }
 
-        _this.previous[directive] = editor.binding();
-        _this.mapping[directive] = el.dataset[directive];
+        _this2.previous[directive] = editor.binding();
+        _this2.mapping[directive] = el.dataset[directive];
 
         var id = CLASSNAME + '-editor' + i;
         var input = editor.render();
@@ -139,7 +149,7 @@ var Panel = function () {
         container.appendChild(label);
         container.appendChild(input);
 
-        _this.content.appendChild(container);
+        _this2.content.appendChild(container);
       });
 
       this.container.style = 'display:block';
@@ -195,19 +205,19 @@ var Editor = require('./Editor');
 
 var evals = {
   heading: /(#+)(.*?)#+/g,
-  italic: /_(.+)_/g,
-  bold: /\*(.+)\*/g,
+  italic: /_(.+?)_/g,
+  bold: /\*(.+?)\*/g,
   link: /\[(.+?)\]\((.+?)\)/g,
-  monospace: /`(.+)`/g,
+  monospace: /`(.+?)`/g,
   linebreak: /\n\n/g
 };
 
 var unevals = {
-  heading: /<h(\d)>(.*)<\/h\d>/g,
-  italic: /<em>(.*)<\/em>/g,
-  bold: /<strong>(.*)<\/strong>/g,
+  heading: /<h(\d)>(.*?)<\/h\d>/g,
+  italic: /<em>(.*?)<\/em>/g,
+  bold: /<strong>(.*?)<\/strong>/g,
   link: /<a href="([^"]*)">(.*?)<\/a>/g,
-  monospace: /<code>(.*)<\/code>/g,
+  monospace: /<code>(.*?)<\/code>/g,
   linebreak: /<br>/g
 };
 
