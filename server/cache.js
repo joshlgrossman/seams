@@ -1,5 +1,5 @@
 const content = {};
-const expireTime = 5000;
+const expireTime = process.env.DEBUG ? 10000 : 600000;
 
 function cache(url, data) {
 
