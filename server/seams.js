@@ -10,6 +10,7 @@ const cache = require('./cache');
 const db = require('./db');
 const save = require('./save');
 const alias = require('./alias');
+const auth = require('./auth');
 
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
@@ -25,7 +26,6 @@ const mimeTypes = {
   '.js':    'text/javascript',
   '.json':  'application/json',
   '.css':   'text/css'
-
 };
 
 function respond404(response, reason) {
@@ -48,13 +48,20 @@ function respondJSON(response, json) {
   respond200(response, {content, head});
 }
 
-function seams({dir, connection}) {
+function adminCookie(str) {
+  return str.replace(/(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+}
+
+function seams({dir, connection, secret}) {
 
   if(connection) db(connection);
+  const jwt = auth(secret);
 
   function get(request, response) {
 
     const {url, fileType} = alias(request.url);
+    const cookie = adminCookie(request.headers.cookie || '');
+    const token = jwt.decode(cookie);
     
     if(!url && !fileType) {
       respond404(response);
@@ -62,7 +69,7 @@ function seams({dir, connection}) {
     }
 
     const cached = cache(url);
-    if(cached) {
+    if(!token && cached) {
       respond200(response, cached);
       return;
     }
@@ -79,7 +86,9 @@ function seams({dir, connection}) {
       if(mimeType === 'text/html' || mimeType === 'application/xml') {
         const $ = cheerio.load(content);
         await render(url, $);
-        admin(url, $);
+
+        if(token) admin(url, $);
+
         content = $.html();
       }
 
@@ -88,9 +97,11 @@ function seams({dir, connection}) {
         'Content-Length': content.length
       };
 
+      const data = {head, content};
+
       respond200(
         response,
-        cache(url, {head, content})
+        token ? data : cache(url, data)
       );
 
     });
