@@ -1,3 +1,5 @@
+const AutoPrefixer = require('less-plugin-autoprefix');
+const CssCleaner = require('less-plugin-clean-css');
 const DEBUG = process.env.DEBUG == 'true';
 
 module.exports = function(grunt) {
@@ -25,6 +27,22 @@ module.exports = function(grunt) {
       }
     },
 
+    less: {
+      build: {
+        files: {
+          'client/dist/admin.css': 'client/src/admin.less'
+        },
+        options: {
+          plugins: [
+            new AutoPrefixer({
+              browsers: ['last 2 versions']
+            }),
+            new CssCleaner()
+          ]
+        }
+      }
+    },
+
     uglify: {
       build: {
         files: {
@@ -37,7 +55,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
-  grunt.registerTask('default', ['browserify', 'uglify']);
+  grunt.registerTask('default', ['browserify', 'uglify', 'less']);
 
 }

@@ -19,6 +19,9 @@
     "babelify": "^7.3.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
-    "grunt-contrib-uglify": "^3.0.1"
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-uglify": "^3.0.1",
+    "less-plugin-autoprefix": "^1.5.1",
+    "less-plugin-clean-css": "^1.5.1"
   }
 }
