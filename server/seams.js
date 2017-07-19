@@ -62,7 +62,11 @@ function parseBody(request) {
         const json = JSON.parse(body.toString());
         resolve(json);
       } catch(e) {
-        reject(e);
+        const json = qs.parse(body.toString());
+
+        if(json) resolve(json);
+        else reject(e);
+
       }
     });
 
@@ -72,27 +76,31 @@ function parseBody(request) {
 function seams({dir, connection, secret, expires}) {
 
   if(connection) db(connection);
-  const jwt = auth.jwt(secret);
-  const responseCache = cache(expires);
+  const _auth = auth.jwt(secret);
+  const _cache = cache(expires);
 
   function get(request, response) {
 
-    const {url, fileType} = alias(request.url);
+    const {url, fileType, adminFile, protectedFile} = alias(request.url);
     const cookie = adminCookie(request.headers.cookie || '');
-    const token = jwt.decode(cookie);
+    const token = _auth.decode(cookie);
 
-    if(!url && !fileType) {
+    if((!url && !fileType) || (protectedFile && !token)) {
       respond404(response);
       return;
     }
 
-    const cached = responseCache(url);
+    const cached = _cache(url);
     if(!token && cached) {
       respond200(response, cached);
       return;
     }
 
-    fs.readFile(path.join(dir, url), async (err, content) => {
+    const filePath = adminFile ? 
+      path.join(__dirname, '../client/dist', url) :
+      path.join(dir, url)
+
+    fs.readFile(filePath, async (err, content) => {
 
       const mimeType = mimeTypes[fileType];
 
@@ -119,7 +127,7 @@ function seams({dir, connection, secret, expires}) {
 
       respond200(
         response,
-        token ? data : responseCache(url, data)
+        token ? data : _cache(url, data)
       );
 
     });
@@ -146,9 +154,12 @@ function seams({dir, connection, secret, expires}) {
         const head = {
           'Content-Type': mimeTypes['.json'],
           'Content-Length': content.length,
-          'Set-Cookie': `seams-jwt=${jwt.encode(username)}; Max-Age=28800`
+          'Set-Cookie': `seams-jwt=${_auth.encode(username)}; Max-Age=28800`,
+          'Location': '/'
         };
-        respond200(response, {content, head});
+        response.writeHead(302, head);
+        response.write(content);
+        response.end();
       } else {
         respondJSON(response, {err: true});
       }
@@ -160,9 +171,9 @@ function seams({dir, connection, secret, expires}) {
 
   return function(request, response) {
     switch(request.method) {
-      case 'GET': get(request, response); break;
-      case 'PUT': put(request, response); break;
-      case 'POST': post(request, response); break;
+      case 'GET': get(request, response); break;  // static files
+      case 'PUT': put(request, response); break;  // content management
+      case 'POST': post(request, response); break;// admin login
     }
   }
 
