@@ -10,8 +10,10 @@ module.exports = function(grunt) {
 
     browserify: {
       build: {
-        src: 'client/src/admin.js',
-        dest: 'client/dist/admin.js',
+        files: {
+          'client/dist/admin.js': 'client/src/admin.js',
+          'client/dist/admin.ui.js': 'client/src/admin.ui.js'
+        },
         options: {
           transform: [[
             'babelify', {
@@ -30,7 +32,8 @@ module.exports = function(grunt) {
     less: {
       build: {
         files: {
-          'client/dist/admin.css': 'client/src/admin.less'
+          'client/dist/admin.css': 'client/src/admin.less',
+          'client/dist/admin.ui.css': 'client/src/admin.ui.less'
         },
         options: {
           plugins: [
@@ -43,10 +46,23 @@ module.exports = function(grunt) {
       }
     },
 
+    htmlmin: {
+      build: {
+        options: {
+          removeComments: true,
+          collapseWhitespace: true
+        },
+        files: {
+          'client/dist/admin.html': 'client/src/admin.html'
+        }
+      }
+    },
+
     uglify: {
       build: {
         files: {
-          'client/dist/admin.min.js': ['client/dist/admin.js']
+          'client/dist/admin.min.js': ['client/dist/admin.js'],
+          'client/dist/admin.ui.min.js': ['client/dist/admin.ui.js']
         }
       }
     }
@@ -56,7 +72,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-  grunt.registerTask('default', ['browserify', 'uglify', 'less']);
+  grunt.registerTask('default', ['browserify', 'uglify', 'less', 'htmlmin']);
 
 }
