@@ -64,7 +64,7 @@ function jwt(secret) {
 function validate({name, password}) {
   return new Promise((resolve, reject) => {
 
-    if(!db.users) reject();
+    if(!name || !password || !db.users) reject();
     else db.users.findOne({name}, (err, doc) => {
       if(err) reject(err);
       
@@ -82,7 +82,7 @@ function validate({name, password}) {
 function create({name, password}) {
   return new Promise((resolve, reject) => {
 
-    if(!db.users) reject();
+    if(!name || !password || !db.users) reject();
     else {
       const salt = crypto.randomBytes(8).toString('hex').slice(0, 16);
       const hmac = crypto.createHmac('sha512', salt);

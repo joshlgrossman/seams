@@ -196,7 +196,7 @@ function seams({dir, connection, secret, expires}) {
       }
 
     } catch (e) {
-      respondJSON(response, {err: true, msg: e.toString()});
+      respondJSON(response, {err: true});
     }
   }
 
