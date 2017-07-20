@@ -39,6 +39,11 @@ function respond200(response, data) {
   response.end();
 }
 
+function respond302(response, data) {
+  response.writeHead(302, data.head);
+  response.end();
+}
+
 function respondJSON(response, json) {
   const content = JSON.stringify(json);
   const head = {
@@ -73,9 +78,35 @@ function parseBody(request) {
   });
 }
 
+function processArgs(args) {
+  const cmdPrefix = '--create-seams-admin';
+  let name, password;
+  for(const arg of args) {
+    const [key,val] = arg.split('=');
+    if(key === `${cmdPrefix}-name`) {
+      name = val;
+    } else if(key === `${cmdPrefix}-password`) {
+      password = val;
+    }
+  }
+  if(name && password) {
+    auth.create({name, password}).then(user => {
+      console.log(`Admin ${name} created`);
+    }).catch(err => {
+      console.log(`Admin ${name} could not be created ${err ? ':' + err : ''}`);
+    });
+  }
+}
+
 function seams({dir, connection, secret, expires}) {
 
-  if(connection) db(connection);
+
+  if(connection) db(connection).then(() => {
+    processArgs(process.argv.slice(2));
+  }).catch(err => {
+    console.log('Could not connect to database');
+  });
+
   const _auth = auth.jwt(secret);
   const _cache = cache(expires);
 
