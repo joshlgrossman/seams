@@ -185,12 +185,9 @@ function seams({dir, connection, secret, expires}) {
         const head = {
           'Content-Type': mimeTypes['.json'],
           'Content-Length': content.length,
-          'Set-Cookie': `seams-jwt=${_auth.encode(username)}; Max-Age=28800`,
-          'Location': '/'
+          'Set-Cookie': `seams-jwt=${_auth.encode(username)}; Max-Age=28800`
         };
-        response.writeHead(302, head);
-        response.write(content);
-        response.end();
+        respond200(response, {head, content});
       } else {
         respondJSON(response, {err: true});
       }

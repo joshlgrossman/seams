@@ -29,8 +29,12 @@ window.addEventListener('load', () => {
 
     if(name && password) {
       http.post('/', {name, password}).then(res => {
+        console.log(res);
         if(res.err) showErrors(res.msg || 'Invalid credentials');
-        else window.location.reload();
+        else {
+          console.log('success');
+          window.location.reload();
+        }
       });
     } else {
       showErrors('Please enter username and password');
