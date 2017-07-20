@@ -40,7 +40,7 @@ class UI {
 
       el.addEventListener('dblclick', evt => {
         doDefault = true;
-        el.click();
+        evt.target.click();
       });
 
     });
