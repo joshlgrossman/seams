@@ -27,10 +27,20 @@ class UI {
 
     nodes.forEach(({el, directives}) => {
 
+      let doDefault = false;
+
       el.addEventListener('click', evt => {
-        this.panel.show(el, directives);
-        evt.stopPropagation();
-        evt.preventDefault();
+        if(!doDefault) {
+          this.panel.show(el, directives);
+          evt.stopPropagation();
+          evt.preventDefault();
+        }
+        doDefault = false;
+      });
+
+      el.addEventListener('dblclick', evt => {
+        doDefault = true;
+        el.click();
       });
 
     });
