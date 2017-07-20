@@ -104,7 +104,7 @@ function storage(obj) {
 }
 
 function cookie(key, val) {
-  if(typeof val === 'undefined') {
+  if(typeof val !== 'undefined') {
     document.cookie = `${key}=${val}`;
     return val;
   } else {
@@ -120,5 +120,6 @@ module.exports = {
   $,
   ajax,
   storage,
+  cookie,
   CLASSNAME
 };

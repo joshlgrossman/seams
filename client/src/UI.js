@@ -1,10 +1,14 @@
-const {$} = require('./util');
+const {$, cookie, CLASSNAME} = require('./util');
 const Panel = require('./Panel');
 
 class UI {
 
   constructor(directives) {
     this.panel = new Panel();
+    this.logout = $('<button>', {
+      id: CLASSNAME + '-logout-btn',
+      innerText: 'log out'
+    });
 
     const nodes = [];
     let id = 0;
@@ -30,6 +34,13 @@ class UI {
       });
 
     });
+
+    this.logout.addEventListener('click', evt => {
+      cookie('seams-jwt', '');
+      window.location.reload();
+    });
+
+    document.body.appendChild(this.logout);
   }
 
 }
