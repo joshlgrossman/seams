@@ -58,9 +58,26 @@ input {
 
 }
 
-.submit-button {
+.submit-btn {
   display: block;
   width: 100%;
   text-align: center;
   margin-top: @spacing;
+}
+
+.errors {
+  font-family: sans-serif;
+  font-size: 14px;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+  color: #666;
+  transition: max-height 200ms, opacity 200ms, margin-bottom 200ms;
+
+  &.show {
+    opacity: 1;
+    max-height: 100px;
+    margin-bottom: @spacing;
+  }
 }
