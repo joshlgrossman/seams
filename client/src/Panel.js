@@ -1,4 +1,4 @@
-const {bind, $, ajax, CLASSNAME} = require('./util');
+const {bind, $, http, CLASSNAME} = require('./util');
 const BasicEditor = require('./BasicEditor');
 const TextEditor = require('./TextEditor');
 
@@ -79,7 +79,7 @@ class Panel {
       params[content] = bind(this.element, directive)();
     }
 
-    ajax.put(window.location.pathname, params)
+    http.put(window.location.pathname, params)
     this.hide();
   }
 

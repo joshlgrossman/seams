@@ -71,13 +71,13 @@ function $(tagOrSelector, options = {}) {
 
 }
 
-function ajax(url, type, params) {
+function http(url, method, params) {
 
   if(!url) return;
 
   const p = new P();
   const xhr = new XMLHttpRequest();
-  xhr.open(type, url, true);
+  xhr.open(method, url, true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onreadystatechange = () => {
     if(xhr.readyState === XMLHttpRequest.DONE) {
@@ -91,9 +91,9 @@ function ajax(url, type, params) {
 
   return p;
 }
-ajax.get = (url, params) => ajax(url, 'GET', params);
-ajax.post = (url, params) => ajax(url, 'POST', params);
-ajax.put = (url, params) => ajax(url, 'PUT', params);
+http.get = (url, params) => http(url, 'GET', params);
+http.post = (url, params) => http(url, 'POST', params);
+http.put = (url, params) => http(url, 'PUT', params);
 
 function storage(obj) {
   if(typeof obj === 'undefined') {
@@ -118,7 +118,7 @@ module.exports = {
   P,
   bind,
   $,
-  ajax,
+  http,
   storage,
   cookie,
   CLASSNAME
