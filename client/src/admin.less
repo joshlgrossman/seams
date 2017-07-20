@@ -1,4 +1,6 @@
-@border: 1px solid #999;
+@import './_mixins';
+
+@spacing: 14px;
 
 * {
   box-sizing: border-box;
@@ -9,10 +11,14 @@ body {
 }
 
 form {
+  display: table;
+  min-width: 300px;
+  min-height: 300px;
   max-width: 600px;
   padding: 20px;
   background-color: #eee;
   border: @border;
+  border-radius: 2px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.2);
   position: absolute;
   top: 50%;
@@ -25,6 +31,11 @@ form {
     left: 0;
     font-family: sans-serif;
     color: #999;
+  }
+
+  .form-content {
+    display: table-cell;
+    vertical-align: middle;
   }
 }
 
@@ -43,27 +54,12 @@ input {
 
   &[type='submit'] {
     display: inline-block;
-    background-color: #b1c1de;
-    border-radius: 100px;
-    color: #333;
-    cursor: pointer;
-    padding: 8px 16px;
-    transition: background-color 150ms, color 150ms;
-    font-family: sans-serif;
-    font-weight: bold;
-    text-transform: lowercase;
-    font-size: 14px;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.3);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-
-    &:hover, &:focus {
-      background-color: #fff;
-      color: #555;
-    }
+    width: 100px;
+    #button(@blue);
   }
 
   + input {
-    margin-top: 10px;
+    margin-top: @spacing;
   }
 
 }
@@ -72,5 +68,5 @@ input {
   display: block;
   width: 100%;
   text-align: center;
-  margin-top: 10px;
+  margin-top: @spacing;
 }
