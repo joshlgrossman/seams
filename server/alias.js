@@ -28,8 +28,7 @@ function alias(url) {
     url = false;
     fileType = false;
   } else if(!fileType) {
-    url += '.html';
-    fileType = '.html';
+    url += (fileType = '.html');
   } else fileType = fileType[0];
 
   return {url, fileType, adminFile, protectedFile, params};
