@@ -66,7 +66,7 @@ function validate({name, password}) {
 
     if(!name || !password || !db.users) reject();
     else db.users.findOne({name}, (err, doc) => {
-      if(err) reject(err);
+      if(err || !doc) return reject(err);
       
       const {password: hash, salt} = doc;
       const hmac = crypto.createHmac('sha512', salt);
