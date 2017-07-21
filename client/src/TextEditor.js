@@ -21,6 +21,12 @@ const unevals = {
   image: /<img src="([^"]*)" alt="([^"]*)">/g,
 };
 
+const escapes = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;'
+};
+
 class TextEditor extends Editor {
 
   constructor(element, property) {
@@ -30,7 +36,8 @@ class TextEditor extends Editor {
 
   eval(str) {
 
-    return str.replace(evals.italic, '<em>$1</em>')
+    return str.replace(/[&<>]/g, match => escapes[match])
+      .replace(evals.italic, '<em>$1</em>')
       .replace(evals.bold, '<strong>$1</strong>')
       .replace(evals.link, '$1<a href="$3">$2</a>')
       .replace(evals.monospace, '<code>$1</code>')
@@ -39,11 +46,15 @@ class TextEditor extends Editor {
       .replace(evals.heading, (match, p1, p2) => {
         const num = p1.length;
         return `<h${num}>${p2}</h${num}>`;
-      });
+      })
 
   }
 
   uneval(str) {
+
+    for(const char in escapes) {
+      str = str.replace(escapes[char], char);
+    }
 
     return str.replace(unevals.italic, '_$1_')
       .replace(unevals.bold, '*$1*')
