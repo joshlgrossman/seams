@@ -18,6 +18,11 @@ class P {
     setTimeout(() => p.resolve(val), 0);
     return p;
   }
+  static reject(err) {
+    const p = new P();
+    setTimeout(() => p.reject(err), 0);
+    return p;
+  }
 }
 
 class HTMLWrapper {
@@ -73,7 +78,7 @@ function $(tagOrSelector, options = {}) {
 
 function http(url, method, params) {
 
-  if(!url) return;
+  if(!url) return P.reject();
 
   const p = new P();
   const xhr = new XMLHttpRequest();
