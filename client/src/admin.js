@@ -28,13 +28,13 @@ window.addEventListener('load', () => {
     const password = $password.value;
 
     if(name && password) {
-      http.post('/', {name, password}).then(res => {
-        console.log(res);
+      http.post('/', {name, password})
+      .then(res => {
         if(res.err) showErrors(res.msg || 'Invalid credentials');
-        else {
-          console.log('success');
-          window.location.reload();
-        }
+        else window.location.reload();
+      })
+      .catch(err => {
+        showErrors('Could not connect to server');
       });
     } else {
       showErrors('Please enter username and password');
