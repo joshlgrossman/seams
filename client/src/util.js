@@ -91,9 +91,18 @@ function http(url, method, params) {
 
   return p;
 }
-http.get = (url, params) => http(url, 'GET', params);
 http.post = (url, params) => http(url, 'POST', params);
 http.put = (url, params) => http(url, 'PUT', params);
+http.get = (url, params) => {
+  const paramArray = [];
+  for(const key in params) {
+    const encodedKey = encodeURIComponent(key);
+    const encodedVal = encodeURIComponent(params[key]);
+    paramArray.push(`${encodedKey}=${encodedVal}`);
+  }
+  url += `?${paramArray.join('&')}`;
+  http(url, 'GET', {});
+}
 
 function cookie(key, val) {
   if(typeof val !== 'undefined') {
