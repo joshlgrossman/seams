@@ -112,7 +112,7 @@ function seams({dir, connection, secret, expires}) {
 
   function get(request, response) {
 
-    const {url, fileType, adminFile, protectedFile} = alias(request.url);
+    const {url, fileType, adminFile, protectedFile, params} = alias(request.url);
     const cookie = adminCookie(request.headers.cookie || '');
     const token = _auth.decode(cookie);
 

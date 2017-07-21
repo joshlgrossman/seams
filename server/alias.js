@@ -1,9 +1,21 @@
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
-const adminFileRegExp = new RegExp(`^/admin.*`);
-const protectedFileRegExp = new RegExp(`^/admin.ui.*`);
+const adminFileRegExp = /^\/admin.*/;
+const protectedFileRegExp = /^\/admin\.ui.*/;
+const paramsRegExp = /(\?|\&)([^=&]+)(\=([^&]+))?/g;
 
 function alias(url) {
+
+  const params = {};
+  const paramArray = url.match(paramsRegExp);
+  url = url.replace(/\?.*/, '');
+
+  if(paramArray && paramArray.length) {
+    for(const param of paramArray) {
+      const [key, val] = param.replace(/^(\?|\&)/, '').split('=');
+      params[key] = val || true;
+    }
+  }
 
   if(url === '/') url = '/index.html';
 
@@ -20,7 +32,7 @@ function alias(url) {
     fileType = '.html';
   } else fileType = fileType[0];
 
-  return {url, fileType, adminFile, protectedFile};
+  return {url, fileType, adminFile, protectedFile, params};
 
 }
 
