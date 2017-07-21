@@ -95,14 +95,6 @@ http.get = (url, params) => http(url, 'GET', params);
 http.post = (url, params) => http(url, 'POST', params);
 http.put = (url, params) => http(url, 'PUT', params);
 
-function storage(obj) {
-  if(typeof obj === 'undefined') {
-    return JSON.parse(localStorage.getItem('seams-admin'));
-  } else {
-    localStorage.setItem('seams-admin', JSON.stringify(obj));
-  }
-}
-
 function cookie(key, val) {
   if(typeof val !== 'undefined') {
     document.cookie = `${key}=${val}`;
@@ -119,7 +111,6 @@ module.exports = {
   bind,
   $,
   http,
-  storage,
   cookie,
   CLASSNAME
 };
