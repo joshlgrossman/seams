@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "seams static site cms",
   "main": "server/seams.js",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Josh Grossman",
   "license": "ISC",
