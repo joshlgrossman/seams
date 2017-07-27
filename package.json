@@ -1,13 +1,12 @@
 {
   "name": "seams",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "seams static site cms",
+  "main": "server/seams.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Josh Grossman",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.1",
