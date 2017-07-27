@@ -1,0 +1,6 @@
+node_modules/
+web/
+client/src/
+Gruntfile.js
+seams.config.json
+server.js
