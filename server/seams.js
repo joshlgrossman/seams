@@ -11,46 +11,24 @@ const db = require('./db');
 const save = require('./save');
 const alias = require('./alias');
 const auth = require('./auth');
+const mimeTypes = require('./mime');
 
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
 
-const mimeTypes = {
-  '.htm':   'text/html',
-  '.html':  'text/html',
-  '.xml':   'application/xml',
-  '.gif':   'image/gif',
-  '.jpg':   'image/jpeg',
-  '.jpeg':  'image/jpeg',
-  '.png':   'image/png',
-  '.js':    'text/javascript',
-  '.json':  'application/json',
-  '.css':   'text/css'
-};
+let DEBUG = false;
 
-function respond404(response, reason) {
-  response.writeHead(404, reason);
+function respond(response, status, {content, head, json}) {
+  if(json !== undefined) {
+    content = JSON.stringify(json);
+    head = head || {};
+    head['Content-Type'] = mimeTypes['.json'];
+    head['Content-Length'] = content.length;
+  }
+  (status, head, content, json);
+  response.writeHead(status, head);
+  if(content !== undefined) response.write(content);
   response.end();
-}
-
-function respond200(response, data) {
-  response.writeHead(200, data.head);
-  response.write(data.content);
-  response.end();
-}
-
-function respond302(response, data) {
-  response.writeHead(302, data.head);
-  response.end();
-}
-
-function respondJSON(response, json) {
-  const content = JSON.stringify(json);
-  const head = {
-    'Content-Type': mimeTypes['.json'],
-    'Content-Length': content.length
-  };
-  respond200(response, {content, head});
 }
 
 function adminCookie(str) {
@@ -78,15 +56,21 @@ function parseBody(request) {
   });
 }
 
+function debug(...str) {
+  if(DEBUG) console.log(...str);
+}
+
 function processArgs(args) {
-  const cmdPrefix = '--create-seams-admin';
+  const cmdPrefix = '--seams';
   let name, password;
   for(const arg of args) {
     const [key,val] = arg.split('=');
-    if(key === `${cmdPrefix}-name`) {
+    if(key === `${cmdPrefix}-admin-name`) {
       name = val;
-    } else if(key === `${cmdPrefix}-password`) {
+    } else if(key === `${cmdPrefix}-admin-password`) {
       password = val;
+    } else if(key === `${cmdPrefix}-debug`) {
+      DEBUG = val || true;
     }
   }
   if(name && password) {
@@ -98,7 +82,7 @@ function processArgs(args) {
   }
 }
 
-function seams({dir, connection, secret, expires}) {
+function seams({dir, db: connection, secret, expires}) {
 
 
   if(connection) db(connection).then(() => {
@@ -117,13 +101,13 @@ function seams({dir, connection, secret, expires}) {
     const token = _auth.decode(cookie);
 
     if((!url && !fileType) || (protectedFile && !token)) {
-      respond404(response);
+      respond(response, 404);
       return;
     }
 
     const cached = _cache(url);
     if(!token && cached) {
-      respond200(response, cached);
+      respond(response, 200, cached);
       return;
     }
 
@@ -136,14 +120,14 @@ function seams({dir, connection, secret, expires}) {
       const mimeType = mimeTypes[fileType];
 
       if(err || !mimeType) {
-        respond404(response);
+        respond(response, 404);
         return;
       }
 
       if(mimeType === 'text/html' || mimeType === 'application/xml') {
         const $ = cheerio.load(content);
         await render(url, $);
-
+        debug(`${url} rendered`);
         if(token) admin(url, $);
 
         content = $.html();
@@ -156,8 +140,9 @@ function seams({dir, connection, secret, expires}) {
 
       const data = {head, content};
 
-      respond200(
+      respond(
         response,
+        200,
         token ? data : _cache(url, data)
       );
 
@@ -169,9 +154,19 @@ function seams({dir, connection, secret, expires}) {
     try {
       const json = await parseBody(request);
       await save(request.url, json);
-      respondJSON(response, {err: false});
+      debug(`${request.url} updated`);
+      respond(response, 200, {
+        json: {
+          err: false
+        }
+      });
     } catch (e) {
-      respondJSON(response, {err: true, msg: e.toString()})
+      respond(response, 200, {
+        json: {
+          err: true, 
+          msg: e.toString()
+        }
+      });
     }
   }
 
@@ -181,19 +176,30 @@ function seams({dir, connection, secret, expires}) {
       const username = await auth.validate(json);
 
       if(username) {
-        const content = JSON.stringify({name: username});
+        debug(`${username} logged in`);
         const head = {
-          'Content-Type': mimeTypes['.json'],
-          'Content-Length': content.length,
           'Set-Cookie': `seams-jwt=${_auth.encode(username)}; Max-Age=28800`
         };
-        respond200(response, {head, content});
+        respond(response, 200, {
+          head, 
+          json: {
+            name: username
+          }
+        });
       } else {
-        respondJSON(response, {err: true});
+        respond(response, 200, {
+          json: {
+            err: true
+          }
+        });
       }
 
     } catch (e) {
-      respondJSON(response, {err: true});
+      respond(response, 200, {
+        json: {
+          err: true
+        }
+      });
     }
   }
 
