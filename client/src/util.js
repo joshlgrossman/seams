@@ -118,6 +118,16 @@ function cookie(key, val) {
   }
 }
 
+function toggleClass(el, className, bool) {
+  if(bool) {
+    if(el.className.indexOf(className) === -1) 
+      el.className += ' '+className;
+  } else {
+    const re = new RegExp(`\\s*${className}\\s*`);
+    el.className = el.className.replace(re,'');
+  }
+}
+
 const CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
@@ -126,5 +136,6 @@ module.exports = {
   $,
   http,
   cookie,
-  CLASSNAME
+  CLASSNAME,
+  toggleClass
 };

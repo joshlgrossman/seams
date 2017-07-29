@@ -1,4 +1,4 @@
-const {$, http} = require('./util');
+const {$, http, toggleClass} = require('./util');
 
 window.addEventListener('load', () => {
 
@@ -10,14 +10,13 @@ window.addEventListener('load', () => {
 
   function showErrors(err) {
     $errors.innerHTML = err;
-    if($errors.className.indexOf('show') === -1)
-      $errors.className += ' show';
+    toggleClass($errors, 'show', true);
     clearTimeout(timeout);
     timeout = setTimeout(hideErrors, 5000);
   }
 
   function hideErrors() {
-    $errors.className = $errors.className.replace(' show', '');
+    toggleClass($errors, 'show', false);
   }
 
   $submit.addEventListener('click', evt => {
