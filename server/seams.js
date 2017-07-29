@@ -84,6 +84,7 @@ function processArgs(args) {
 
 function seams({dir, db: connection, secret, expires}) {
 
+  console.log('> seams server running');
 
   if(connection) db(connection).then(() => {
     processArgs(process.argv.slice(2));
