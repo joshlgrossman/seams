@@ -77,7 +77,7 @@ function processArgs(args) {
     auth.create({name, password}).then(user => {
       console.log(`Admin ${name} created`);
     }).catch(err => {
-      console.log(`Admin ${name} could not be created ${err ? ':' + err : ''}`);
+      console.error(`Admin ${name} could not be created ${err ? ':' + err : ''}`);
     });
   }
 }
@@ -88,7 +88,7 @@ function seams({dir, db: connection, secret, expires}) {
   if(connection) db(connection).then(() => {
     processArgs(process.argv.slice(2));
   }).catch(err => {
-    console.log('Could not connect to database');
+    console.error(`Could not connect to database: ${err.toString()}`);
   });
 
   const _auth = auth.jwt(secret);
