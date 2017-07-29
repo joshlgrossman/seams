@@ -14,7 +14,7 @@
   padding: 10px;
   width: 300px;
   transition: left 100ms, right 100ms;
-  z-index: 99999;
+  z-index: 999998;
 
   * {
     box-sizing: border-box !important;
@@ -110,6 +110,63 @@
       margin-top: 10px;      
     }
 
+  }
+
+}
+
+#seams-admin-panel-prompt {
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999999;
+  background-color: rgba(0,0,0,0.2);
+
+  .seams-admin-panel-prompt-content {
+    #box(@min-height: 200px);
+    width: 300px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+
+    .seams-admin-panel-prompt-title {
+      font-family: sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .seams-admin-panel-prompt-message {
+      font-family: sans-serif;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .seams-admin-panel-prompt-btns {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+
+      .seams-admin-panel-prompt-yes-btn,
+      .seams-admin-panel-prompt-no-btn {
+        position: absolute !important;
+        bottom: 0 !important;
+        min-width: 150px;
+      }
+
+      .seams-admin-panel-prompt-yes-btn {
+        #button(@blue) !important;
+        right: 10px !important;
+      }  
+      
+      .seams-admin-panel-prompt-no-btn {
+        #button() !important;
+        left: 10px !important;
+      }  
+
+    }
   }
 
 }
