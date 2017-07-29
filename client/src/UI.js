@@ -1,10 +1,13 @@
-const {$, cookie, CLASSNAME} = require('./util');
+const {$, cookie, CLASSNAME, toggleClass} = require('./util');
 const Panel = require('./Panel');
 
 class UI {
 
   constructor(directives) {
     this.panel = new Panel();
+    this.alert = $('<div>', {
+      id: CLASSNAME + '-alert'
+    });
     this.logout = $('<button>', {
       id: CLASSNAME + '-logout-btn',
       innerText: 'log out'
@@ -48,6 +51,14 @@ class UI {
         evt.target.click();
       });
 
+      el.addEventListener('mouseenter', evt => {
+        toggleClass(this.alert, 'show', true);
+      });
+
+      el.addEventListener('mouseleave', evt => {
+        toggleClass(this.alert, 'show', false);
+      });
+
     });
 
     this.logout.addEventListener('click', evt => {
@@ -55,7 +66,12 @@ class UI {
       window.location.reload();
     });
 
+    window.addEventListener('mousemove', evt => {
+      this.alert.style = `left:${evt.pageX};top:${evt.pageY}`;
+    });
+
     document.body.appendChild(this.logout);
+    document.body.appendChild(this.alert);
   }
 
 }
