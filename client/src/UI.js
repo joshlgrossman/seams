@@ -31,7 +31,12 @@ class UI {
 
       el.addEventListener('click', evt => {
         if(!doDefault) {
-          this.panel.show(el, directives);
+
+          const x = evt.pageX;
+          const width = window.innerWidth || document.body.clientWidth;
+          const side = x < width/2;
+
+          this.panel.show(el, directives, side);
           evt.stopPropagation();
           evt.preventDefault();
         }
