@@ -42,6 +42,8 @@ class Panel {
       document.body.appendChild(this.container);
       this.loaded = true;
     }
+
+    if(this.visible) return;
     
     this.position(side);
     this.editors = [];
