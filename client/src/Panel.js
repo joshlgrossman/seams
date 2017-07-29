@@ -1,12 +1,16 @@
-const {bind, $, http, CLASSNAME} = require('./util');
+const {bind, $, P, http, CLASSNAME} = require('./util');
 const BasicEditor = require('./BasicEditor');
 const TextEditor = require('./TextEditor');
+const Prompt = require('./Prompt');
 
 class Panel {
 
   constructor() {
+    this.prompt = new Prompt();
     this.side = 1;
     this.loaded = false;
+    this.visible = false;
+    this.editors = [];
     this.container = $('<div>', {id: CLASSNAME, class: CLASSNAME + this.side});
     this.content = $('<div>', {class: CLASSNAME+'-content'});
 
@@ -40,6 +44,7 @@ class Panel {
     }
     
     this.position(side);
+    this.editors = [];
 
     this.content.innerHTML = '';
     this.previous = {};
@@ -54,6 +59,7 @@ class Panel {
         default: editor = new BasicEditor(el, directive);
       }
 
+      this.editors.push(editor);
       this.previous[directive] = editor.binding();
       this.mapping[directive] = el.dataset[directive];
 
@@ -66,6 +72,7 @@ class Panel {
       container.appendChild(label);
       container.appendChild(input);
 
+      this.visible = true;
       this.content.appendChild(container);
 
     });
@@ -74,26 +81,74 @@ class Panel {
   }
 
   hide() {
+    this.visible = false;
     this.container.style = 'display:none';
   }
 
+  stale() {
+    return this.editors.some(editor => editor.stale);
+  }
+
   save() {
-    const params = {};
+    if(this.stale()) {
 
-    for(const directive in this.mapping) {
-      const content = this.mapping[directive];
-      params[content] = bind(this.element, directive)();
+      const promise = new P();
+
+      this.prompt
+      .show({
+        title: 'Save',
+        message: 'Are you sure you would like to save your changes?',
+        yes: 'save changes',
+        no: 'continue editing'
+      })
+      .then(() => {
+        const params = {};
+
+        for(const directive in this.mapping) {
+          const content = this.mapping[directive];
+          params[content] = bind(this.element, directive)();
+        }
+
+        http.put(window.location.pathname, params)
+        this.hide();
+        promise.resolve();
+      }).catch(() => promise.reject());
+
+      return promise;
+
+    } else {
+      this.hide();
+      return P.reject();
     }
-
-    http.put(window.location.pathname, params)
-    this.hide();
   }
 
   cancel() {
-    for(const directive in this.previous) {
-      bind(this.element, directive)(this.previous[directive]);
+    if(this.stale()) {
+
+      const promise = new P();
+
+      this.prompt
+      .show({
+        title: 'Cancel',
+        message: 'Are you sure you would like to cancel? You will lose any unsaved changes.',
+        yes: 'revert changes',
+        no: 'continue editing'
+      })
+      .then(() => {
+        for(const directive in this.previous) {
+          bind(this.element, directive)(this.previous[directive]);
+        }
+        this.hide();
+        promise.resolve();
+      }).catch(() => promise.reject());
+
+      return promise;
+
+    } else {
+      this.hide();
+      return P.reject();
     }
-    this.hide();
+
   }
 
 }
