@@ -14,6 +14,7 @@ class BasicEditor extends Editor {
     });
 
     input.addEventListener('input', () => {
+      this.stale = true;
       this.binding(input.value);
     });
 

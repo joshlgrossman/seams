@@ -82,6 +82,7 @@ class TextEditor extends Editor {
     });
 
     ta.addEventListener('input', e => {
+      this.stale = true;
       this.binding(this.eval(ta.value));
     });
 
