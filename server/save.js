@@ -9,7 +9,7 @@ function save(url, data) {
   return new Promise((resolve, reject) => {
 
     if(!db.contents) resolve({});
-    else db.contents.updateOne({url: aliased}, {$set}, (err, result) => {
+    else db.contents.updateOne({url: aliased}, {$set}, {upsert: true}, (err, result) => {
       if(err) reject(err);
       else resolve(result ? result.result : {});
     });
