@@ -8,12 +8,13 @@ async function render(url, $) {
 
     for(const key in content) {
       const val = content[key];
-      for(const directiveName in directives) {
-        directives[directiveName](
-          $(`*[data-${directiveName}=${key}]`),
-          val
-        );
-      }
+      if(val)
+        for(const directiveName in directives) {
+          directives[directiveName](
+            $(`*[data-${directiveName}=${key}]`),
+            val
+          );
+        }
     }
   } catch (e) {
     console.log(e);  
