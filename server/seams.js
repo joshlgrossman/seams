@@ -13,19 +13,15 @@ const alias = require('./alias');
 const auth = require('./auth');
 const mimeTypes = require('./mime');
 
-const fileNameRegExp = /\/[^\/]+$/g;
-const fileTypeRegExp = /\.[^\.]+$/g;
-
 let DEBUG = false;
 
-function respond(response, status, {content, head, json}) {
+function respond(response, status, {content, head, json} = {}) {
   if(json !== undefined) {
     content = JSON.stringify(json);
     head = head || {};
     head['Content-Type'] = mimeTypes['.json'];
     head['Content-Length'] = content.length;
   }
-  (status, head, content, json);
   response.writeHead(status, head);
   if(content !== undefined) response.write(content);
   response.end();
@@ -126,12 +122,16 @@ function seams({dir, db: connection, secret, expires}) {
       }
 
       if(mimeType === 'text/html' || mimeType === 'application/xml') {
-        const $ = cheerio.load(content);
-        await render(url, $);
-        debug(`${url} rendered`);
-        if(token) admin(url, $);
+        try {
+          const $ = cheerio.load(content);
+          await render(url, $);
+          debug(`${url} rendered`);
+          if(token) admin(url, $);
 
-        content = $.html();
+          content = $.html();
+        } catch(e) {
+          console.log(`Rendering error: ${e}`);
+        }
       }
 
       const head = {
@@ -205,10 +205,15 @@ function seams({dir, db: connection, secret, expires}) {
   }
 
   return function(request, response) {
-    switch(request.method) {
-      case 'GET': get(request, response); break;  // static files
-      case 'PUT': put(request, response); break;  // content management
-      case 'POST': post(request, response); break;// admin login
+    try {
+      switch(request.method) {
+        case 'GET': get(request, response); break;  // static files
+        case 'PUT': put(request, response); break;  // content management
+        case 'POST': post(request, response); break;// admin login
+      }
+    } catch (e) {
+      console.log(`Error handling request: ${e}`);
+      respond(response, 404);
     }
   }
 
