@@ -22,6 +22,8 @@ Seams is markup-driven, meaning that the user can create standard, valid HTML pa
 
 Tells Seams to inject the `header` content for the current page into this `h1` tag.  If no such content exists, the `h1` will default to the `This is the default header` text.
 
+Unlike most content management systems, Seams has no backend other than a single admin login page.  All content editing is done directly on the pages one wishes to edit.
+
 Starting a Seams server is as easy as:
 
 ```js
