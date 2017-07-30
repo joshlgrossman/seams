@@ -1,11 +1,15 @@
 {
   "name": "seams",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "seams static site cms",
   "main": "server/seams.js",
   "scripts": {},
   "keywords": [],
   "author": "Josh Grossman",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joshlgrossman/seams"
+  },
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.1",
