@@ -111,7 +111,7 @@ http.get = (url, params) => {
 
 function cookie(key, val) {
   if(typeof val !== 'undefined') {
-    document.cookie = `${key}=${val}`;
+    document.cookie = `${key}=${val};${!val?'expires=Thu, 01 Jan 1970 00:00:00 UTC;':''}path=/;`
     return val;
   } else {
     return document.cookie.replace(new RegExp(`(?:(?:^|.*;\\s*)${key}\\s*\=\\s*([^;]*).*$)|^.*$`), "$1");
