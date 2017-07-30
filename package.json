@@ -4,6 +4,9 @@
   "description": "static-site cms",
   "main": "server/seams.js",
   "scripts": {},
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "keywords": [
     "static",
     "site",
