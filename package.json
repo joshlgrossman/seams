@@ -1,10 +1,14 @@
 {
   "name": "seams",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "static-site cms",
   "main": "server/seams.js",
   "scripts": {},
-  "keywords": ["static", "site", "cms"],
+  "keywords": [
+    "static",
+    "site",
+    "cms"
+  ],
   "author": "Josh Grossman",
   "repository": {
     "type": "git",
