@@ -27,7 +27,7 @@ Starting a Seams server is as easy as:
 ```js
 const http = require('http');
 const path = require('path');
-const seams = reqiure('seams');
+const seams = require('seams');
 
 const server = http.createServer(
   seams({
