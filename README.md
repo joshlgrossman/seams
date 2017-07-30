@@ -80,5 +80,5 @@ Elements given the `data-content` attribute are editable with basic markdown syn
 * \#\#This is an h2\#
 * \_This is italicized\_
 * \*This is bold\*
-* \[This is a link to\]\(http://www.google.com\)
-* \!\[This is alt text\]\(for-some-image.jpg\)
+* \[This is a link to\]\(http://www.google.com)
+* \!\[This is alt text\]\(for-some-image.jpg)
