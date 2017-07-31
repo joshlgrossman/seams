@@ -88,14 +88,14 @@ function seams({dir, db: connection, secret, expires}) {
     console.error(`Could not connect to database: ${err.toString()}`);
   });
 
-  const _auth = auth.jwt(secret);
+  const _jwt = auth.jwt(secret);
   const _cache = cache(expires);
 
   function get(request, response) {
 
     const {url, fileType, adminFile, protectedFile, params} = alias(request.url);
     const cookie = adminCookie(request.headers.cookie || '');
-    const token = _auth.decode(cookie);
+    const token = _jwt.decode(cookie);
 
     if((!url && !fileType) || (protectedFile && !token)) {
       respond(response, 404);
@@ -179,7 +179,7 @@ function seams({dir, db: connection, secret, expires}) {
       if(username) {
         debug(`${username} logged in`);
         const head = {
-          'Set-Cookie': `seams-jwt=${_auth.encode(username)}; Max-Age=28800`
+          'Set-Cookie': `seams-jwt=${_jwt.encode(username)}; Max-Age=28800`
         };
         respond(response, 200, {
           head, 
@@ -212,7 +212,7 @@ function seams({dir, db: connection, secret, expires}) {
         case 'POST': post(request, response); break;// admin login
       }
     } catch (e) {
-      console.log(`Error handling request: ${e}`);
+      console.error(`Error handling request: ${e}`);
       respond(response, 404);
     }
   }

@@ -6,6 +6,8 @@ const paramsRegExp = /(\?|\&)([^=&]+)(\=([^&]+))?/g;
 
 function alias(url) {
 
+  if(url === undefined) return {};
+
   const params = {};
   const paramArray = url.match(paramsRegExp);
   url = url.replace(/\?.*/, '');
@@ -24,12 +26,9 @@ function alias(url) {
   let adminFile = adminFileRegExp.test(url);
   let protectedFile = adminFile && protectedFileRegExp.test(url);
 
-  if(!fileName) {
-    url = false;
-    fileType = false;
-  } else if(!fileType) {
-    url += (fileType = '.html');
-  } else fileType = fileType[0];
+  if(!fileName) url = fileType = false;
+  else if(!fileType) url += (fileType = '.html');
+  else fileType = fileType[0];
 
   return {url, fileType, adminFile, protectedFile, params};
 
