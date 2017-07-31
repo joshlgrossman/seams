@@ -1,7 +1,7 @@
 const fileNameRegExp = /\/[^\/]+$/g;
 const fileTypeRegExp = /\.[^\.]+$/g;
-const adminFileRegExp = /^\/admin.*/;
-const protectedFileRegExp = /^\/admin\.ui.*/;
+const adminFileRegExp = /^\/seams.*/;
+const protectedFileRegExp = /^\/seams\.ui.*/;
 const paramsRegExp = /(\?|\&)([^=&]+)(\=([^&]+))?/g;
 
 function alias(url) {

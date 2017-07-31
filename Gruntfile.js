@@ -11,8 +11,8 @@ module.exports = function(grunt) {
     browserify: {
       build: {
         files: {
-          'client/dist/admin.js': 'client/src/admin.js',
-          'client/dist/admin.ui.js': 'client/src/admin.ui.js'
+          'client/dist/seams.js': 'client/src/seams.js',
+          'client/dist/seams.ui.js': 'client/src/seams.ui.js'
         },
         options: {
           transform: [[
@@ -32,8 +32,8 @@ module.exports = function(grunt) {
     less: {
       build: {
         files: {
-          'client/dist/admin.css': 'client/src/admin.less',
-          'client/dist/admin.ui.css': 'client/src/admin.ui.less'
+          'client/dist/seams.css': 'client/src/seams.less',
+          'client/dist/seams.ui.css': 'client/src/seams.ui.less'
         },
         options: {
           plugins: [
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
           collapseWhitespace: true
         },
         files: {
-          'client/dist/admin.html': 'client/src/admin.html'
+          'client/dist/seams.html': 'client/src/seams.html'
         }
       }
     },
@@ -61,8 +61,8 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         files: {
-          'client/dist/admin.min.js': ['client/dist/admin.js'],
-          'client/dist/admin.ui.min.js': ['client/dist/admin.ui.js']
+          'client/dist/seams.min.js': ['client/dist/seams.js'],
+          'client/dist/seams.ui.min.js': ['client/dist/seams.ui.js']
         }
       }
     }
