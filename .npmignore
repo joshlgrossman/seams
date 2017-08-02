@@ -1,6 +1,7 @@
 node_modules/
 web/
 client/src/
+test/
 Gruntfile.js
 seams.config.json
 server.js

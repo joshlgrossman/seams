@@ -8,6 +8,15 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+        },
+        src: ['./test/*.test.js']
+      }
+    },
+
     eslint: {
       options: {
         configFile: 'eslint.json',
@@ -86,9 +95,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-eslint');
+  grunt.loadNpmTasks('grunt-mocha-test');
 
   grunt.registerTask('test', [
-    'eslint'
+    'eslint',
+    'mochaTest'
   ]);
 
   grunt.registerTask('default', [
