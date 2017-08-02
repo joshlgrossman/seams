@@ -4,3 +4,4 @@ client/src/
 Gruntfile.js
 seams.config.json
 server.js
+eslint.json
