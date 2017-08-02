@@ -1,4 +1,4 @@
-const {bind, $, CLASSNAME} = require('./util');
+const {$} = require('./util');
 const Editor = require('./Editor');
 
 class BasicEditor extends Editor {

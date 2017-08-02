@@ -8,6 +8,10 @@ window.addEventListener('load', () => {
   const $submit = $('.submit')[0];
   let timeout;
 
+  function hideErrors() {
+    toggleClass($errors, 'show', false);
+  }
+
   function showErrors(err) {
     $errors.innerHTML = err;
     toggleClass($errors, 'show', true);
@@ -15,9 +19,6 @@ window.addEventListener('load', () => {
     timeout = setTimeout(hideErrors, 5000);
   }
 
-  function hideErrors() {
-    toggleClass($errors, 'show', false);
-  }
 
   $submit.addEventListener('click', evt => {
     evt.preventDefault();
@@ -32,7 +33,7 @@ window.addEventListener('load', () => {
         if(res.err) showErrors(res.msg || 'Invalid credentials');
         else window.location.reload();
       })
-      .catch(err => {
+      .catch(() => {
         showErrors('Could not connect to server');
       });
     } else {

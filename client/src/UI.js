@@ -51,17 +51,17 @@ class UI {
         evt.target.click();
       });
 
-      el.addEventListener('mouseenter', evt => {
+      el.addEventListener('mouseenter', () => {
         toggleClass(this.alert, 'show', true);
       });
 
-      el.addEventListener('mouseleave', evt => {
+      el.addEventListener('mouseleave', () => {
         toggleClass(this.alert, 'show', false);
       });
 
     });
 
-    this.logout.addEventListener('click', evt => {
+    this.logout.addEventListener('click', () => {
       cookie('seams-jwt', '');
       window.location.reload();
     });

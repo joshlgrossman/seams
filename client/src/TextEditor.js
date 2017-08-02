@@ -81,7 +81,7 @@ class TextEditor extends Editor {
       style: `height:${height}px`
     });
 
-    ta.addEventListener('input', e => {
+    ta.addEventListener('input', () => {
       this.stale = true;
       this.binding(this.eval(ta.value));
     });

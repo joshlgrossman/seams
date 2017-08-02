@@ -3,6 +3,6 @@ const directives = require('../../server/directives');
 
 window.addEventListener('load', () => {
 
-  const ui = new UI(Object.keys(directives));
+  new UI(Object.keys(directives));
 
 });
