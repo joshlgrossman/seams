@@ -100,5 +100,7 @@ function create({name, password}) {
 module.exports = {
   jwt,
   validate,
-  create
+  create,
+  base64Decode,
+  base64Encode
 }
