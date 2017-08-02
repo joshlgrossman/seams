@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const qs = require('querystring');
 
 const cheerio = require('cheerio');
 
@@ -34,7 +33,7 @@ function seams({dir, db: connection, secret, expires}) {
 
   function get(request, response) {
 
-    const {url, fileType, adminFile, protectedFile, params} = alias(request.url);
+    const {url, fileType, adminFile, protectedFile} = alias(request.url);
     const cookie = admin.cookie(request.headers.cookie || '');
     const token = _jwt.decode(cookie);
 

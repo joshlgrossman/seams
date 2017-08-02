@@ -1,3 +1,5 @@
+const qs = require('querystring');
+
 const auth = require('./auth');
 const mimeTypes = require('./mime');
 
@@ -54,7 +56,7 @@ function processArgs(args) {
     }
   }
   if(name && password) {
-    auth.create({name, password}).then(user => {
+    auth.create({name, password}).then(() => {
       console.log(`Admin ${name} created`);
     }).catch(err => {
       console.error(`Admin ${name} could not be created ${err ? ':' + err : ''}`);

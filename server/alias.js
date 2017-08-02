@@ -21,10 +21,10 @@ function alias(url) {
 
   if(url[url.length-1] === '/') url += 'index.html';
 
-  let fileName = url.match(fileNameRegExp);
   let fileType = url.match(fileTypeRegExp);
-  let adminFile = adminFileRegExp.test(url);
-  let protectedFile = adminFile && protectedFileRegExp.test(url);
+  const fileName = url.match(fileNameRegExp);
+  const adminFile = adminFileRegExp.test(url);
+  const protectedFile = adminFile && protectedFileRegExp.test(url);
 
   if(!fileName) url = fileType = false;
   else if(!fileType) url += (fileType = '.html');
