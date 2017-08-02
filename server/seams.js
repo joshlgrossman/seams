@@ -12,71 +12,12 @@ const save = require('./save');
 const alias = require('./alias');
 const auth = require('./auth');
 const mimeTypes = require('./mime');
-
-let DEBUG = false;
-
-function respond(response, status, {content, head, json} = {}) {
-  if(json !== undefined) {
-    content = JSON.stringify(json);
-    head = head || {};
-    head['Content-Type'] = mimeTypes['.json'];
-    head['Content-Length'] = content.length;
-  }
-  response.writeHead(status, head);
-  if(content !== undefined) response.write(content);
-  response.end();
-}
-
-function adminCookie(str) {
-  return str.replace(/(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/, '$1');
-}
-
-function parseBody(request) {
-  return new Promise((resolve, reject) => {
-
-    let body = '';
-    request.on('data', data => body += data);
-    request.on('end', () => {
-      try {
-        const json = JSON.parse(body.toString());
-        resolve(json);
-      } catch(e) {
-        const json = qs.parse(body.toString());
-
-        if(json) resolve(json);
-        else reject(e);
-
-      }
-    });
-
-  });
-}
-
-function debug(...str) {
-  if(DEBUG) console.log(...str);
-}
-
-function processArgs(args) {
-  const cmdPrefix = '--seams';
-  let name, password;
-  for(const arg of args) {
-    const [key,val] = arg.split('=');
-    if(key === `${cmdPrefix}-admin-name`) {
-      name = val;
-    } else if(key === `${cmdPrefix}-admin-password`) {
-      password = val;
-    } else if(key === `${cmdPrefix}-debug`) {
-      DEBUG = val || true;
-    }
-  }
-  if(name && password) {
-    auth.create({name, password}).then(user => {
-      console.log(`Admin ${name} created`);
-    }).catch(err => {
-      console.error(`Admin ${name} could not be created ${err ? ':' + err : ''}`);
-    });
-  }
-}
+const {
+  respond,
+  parseBody,
+  debug,
+  processArgs
+} = require('./util');
 
 function seams({dir, db: connection, secret, expires}) {
 
@@ -94,7 +35,7 @@ function seams({dir, db: connection, secret, expires}) {
   function get(request, response) {
 
     const {url, fileType, adminFile, protectedFile, params} = alias(request.url);
-    const cookie = adminCookie(request.headers.cookie || '');
+    const cookie = admin.cookie(request.headers.cookie || '');
     const token = _jwt.decode(cookie);
 
     if((!url && !fileType) || (protectedFile && !token)) {
@@ -126,7 +67,7 @@ function seams({dir, db: connection, secret, expires}) {
           const $ = cheerio.load(content);
           await render(url, $);
           debug(`${url} rendered`);
-          if(token) admin(url, $);
+          if(token) admin.inject(url, $);
 
           content = $.html();
         } catch(e) {
@@ -179,7 +120,7 @@ function seams({dir, db: connection, secret, expires}) {
       if(username) {
         debug(`${username} logged in`);
         const head = {
-          'Set-Cookie': `seams-jwt=${_jwt.encode(username)}; Max-Age=28800`
+          'Set-Cookie': `${admin.cookie()}=${_jwt.encode(username)}; Max-Age=28800`
         };
         respond(response, 200, {
           head, 
