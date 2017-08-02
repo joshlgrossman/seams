@@ -8,6 +8,18 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    eslint: {
+      options: {
+        configFile: 'eslint.json',
+        reset: true
+      },
+
+      build: [
+        'server/*.js',
+        'client/src/*.js'
+      ]
+    },
+
     browserify: {
       build: {
         files: {
@@ -73,7 +85,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
+  grunt.loadNpmTasks('grunt-eslint');
 
-  grunt.registerTask('default', ['browserify', 'uglify', 'less', 'htmlmin']);
+  grunt.registerTask('test', [
+    'eslint'
+  ]);
+
+  grunt.registerTask('default', [
+    'eslint',
+    'browserify', 
+    'uglify', 
+    'less', 
+    'htmlmin'
+  ]);
 
 }
