@@ -74,7 +74,7 @@ Initially running the server with the flags `--seams-admin-name` and `--seams-ad
 Editing content
 ===
 
-Once the server is running, navigate to `/admin` and log in with the credentials created from the command line.  Once logged in, navigate to the page to edit, click on a content area (a bubble will appear around the cursor when hovering over an editable content area) and edit it with the panel that appears.  Saving these changes will persist it to the database and the page will then render with the new content.
+Once the server is running, navigate to `/seams` and log in with the credentials created from the command line.  Once logged in, navigate to the page to edit, click on a content area (a bubble will appear around the cursor when hovering over an editable content area) and edit it with the panel that appears.  Saving these changes will persist it to the database and the page will then render with the new content.
 
 Elements given the `data-content` attribute are editable with basic markdown syntax:
 
