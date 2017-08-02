@@ -16,8 +16,6 @@ function jwt(secret) {
     const [header64, payload64, signature] = token.split('.');
     if(!header64 || !payload64 || !signature) return null;
 
-    const now = new Date();
-    const hour = 3600000;
     const hmac = crypto.createHmac('sha256', secret);
 
     hmac.update(header64 + '.' + payload64);
@@ -27,13 +25,14 @@ function jwt(secret) {
     const header = base64Decode(header64);
     const payload = base64Decode(payload64);
 
+    if(!payload.exp || payload.exp < Date.now()) return null;
+
     return {header, payload};
 
   }
 
   function encode(name) {
 
-    const now = new Date();
     const hour = 3600000;
     const hmac = crypto.createHmac('sha256', secret);
 
@@ -43,7 +42,7 @@ function jwt(secret) {
     };
 
     const payload = {
-      exp: new Date(now + hour).getTime(),
+      exp: Date.now() + hour,
       name: name,
       admin: true
     };
