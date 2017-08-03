@@ -63,16 +63,40 @@ function bind(el, property) {
   }
 }
 
-function $(tagOrSelector, options = {}) {
+function $(tagOrSelector, options = {}, toggle) {
 
-  if(!~tagOrSelector.indexOf('<')) return [...document.querySelectorAll(tagOrSelector)];
+  if(tagOrSelector instanceof HTMLElement) {
+    const el = tagOrSelector;
 
-  const el = document.createElement(tagOrSelector.replace(/\<|\>/g, ''));
-  for(const key in options) {
-    bind(el, key)(options[key]);
+    if(typeof options === 'string') {
+      const className = options.replace('.', '');
+      if(toggle) {
+        if(el.className.indexOf(className) === -1)
+          el.className += ' '+className;
+      } else {
+        const re = new RegExp(`\\s*${className}\\s*`);
+        el.className = el.className.replace(re,'');
+      }
+    } else if (typeof options === 'object') {
+      const arr = [];
+      for(const prop in options) arr.push(`${prop}:${options[prop]}`);
+      el.setAttribute('style', arr.join(';'));
+    }
+
+    return el;
+
+  } else {
+
+    if (!~tagOrSelector.indexOf('<')) return [...document.querySelectorAll(tagOrSelector)];
+
+    const el = document.createElement(tagOrSelector.replace(/\<|\>/g, ''));
+    for (const key in options) {
+      bind(el, key)(options[key]);
+    }
+
+    return el;
+
   }
-
-  return el;
 
 }
 
@@ -107,7 +131,7 @@ http.get = (url, params) => {
   }
   url += `?${paramArray.join('&')}`;
   http(url, 'GET', {});
-}
+};
 
 function cookie(key, val) {
   if(typeof val !== 'undefined') {
@@ -118,24 +142,13 @@ function cookie(key, val) {
   }
 }
 
-function toggleClass(el, className, bool) {
-  if(bool) {
-    if(el.className.indexOf(className) === -1) 
-      el.className += ' '+className;
-  } else {
-    const re = new RegExp(`\\s*${className}\\s*`);
-    el.className = el.className.replace(re,'');
-  }
-}
-
 const CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
   P,
+  CLASSNAME,
   bind,
   $,
   http,
-  cookie,
-  CLASSNAME,
-  toggleClass
+  cookie
 };

@@ -40,13 +40,17 @@ class Prompt {
     this.yesBtn.innerText = yes;
     this.noBtn.innerText = no;
 
-    this.wrapper.style = 'display:block';
+    $(this.wrapper, {
+      display: 'block'
+    });
 
     return this.promise;
   }
 
   hide() {
-    this.wrapper.style = 'display:none';
+    $(this.wrapper, {
+      display: 'none'
+    });
   }
 
   yes() {

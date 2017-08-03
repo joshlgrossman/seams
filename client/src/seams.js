@@ -9,12 +9,12 @@ window.addEventListener('load', () => {
   let timeout;
 
   function hideErrors() {
-    toggleClass($errors, 'show', false);
+    $($errors, '.show', false);
   }
 
   function showErrors(err) {
     $errors.innerHTML = err;
-    toggleClass($errors, 'show', true);
+    $($errors, '.show', true);
     clearTimeout(timeout);
     timeout = setTimeout(hideErrors, 5000);
   }

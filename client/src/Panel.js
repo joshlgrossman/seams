@@ -79,12 +79,12 @@ class Panel {
 
     });
 
-    this.container.style = 'display:block';
+    $(this.container, {display: 'block'});
   }
 
   hide() {
     this.visible = false;
-    this.container.style = 'display:none';
+    $(this.container, {display: 'none'});
   }
 
   stale() {

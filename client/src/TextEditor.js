@@ -76,9 +76,9 @@ class TextEditor extends Editor {
     const lines = value.split('\n') || [];
     const height = (1 + lines.length + lines.reduce((r,v) => r + (v.length/40)|0,0)) * 20;
 
-    const ta = $('<textarea>', {
-      value,
-      style: `height:${height}px`
+    const ta = $('<textarea>', {value});
+    $(ta, {
+      height: `${height}px`
     });
 
     ta.addEventListener('input', () => {

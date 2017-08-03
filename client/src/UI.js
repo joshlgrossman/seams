@@ -1,4 +1,4 @@
-const {$, cookie, CLASSNAME, toggleClass} = require('./util');
+const {$, cookie, CLASSNAME} = require('./util');
 const Panel = require('./Panel');
 
 class UI {
@@ -52,11 +52,11 @@ class UI {
       });
 
       el.addEventListener('mouseenter', () => {
-        toggleClass(this.alert, 'show', true);
+        $(this.alert, '.show', true);
       });
 
       el.addEventListener('mouseleave', () => {
-        toggleClass(this.alert, 'show', false);
+        $(this.alert, '.show', false);
       });
 
     });
@@ -67,7 +67,10 @@ class UI {
     });
 
     window.addEventListener('mousemove', evt => {
-      this.alert.style = `left:${evt.pageX};top:${evt.pageY}`;
+      $(this.alert, {
+        left: evt.pageX,
+        top: evt.pageY
+      });
     });
 
     document.body.appendChild(this.logout);
