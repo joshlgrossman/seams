@@ -3,7 +3,10 @@
   "version": "0.2.0",
   "description": "static-site cms",
   "main": "server/seams.js",
-  "scripts": {},
+  "scripts": {
+    "build": "node ./node_modules/grunt/bin/grunt",
+    "test": "node ./node_modules/grunt/bin/grunt test"
+  },
   "engines": {
     "node": ">=8.0.0"
   },
