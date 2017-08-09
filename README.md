@@ -1,4 +1,4 @@
-Seams is a markup-driven, static-site CMS.
+Seams is a minimal, markup-driven, static-site CMS.
 
 Installation
 ===
@@ -42,7 +42,7 @@ const server = http.createServer(
 server.listen(8080);
 ```
 
-This will serve contents from the `web/` directory while injecting content wherever a Seams data attribute is found.  Valid Seams attributes are:
+This will serve static content from the `web/` directory while injecting dynamic content wherever a Seams data attribute is found.  Valid Seams attributes are:
 
 * `data-content` - Renders the `innerHTML` of the element it is found on.
 * `data-src` - Sets the `src` attribute of the element it is found on (useful for `img` tags).
