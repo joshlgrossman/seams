@@ -1,4 +1,4 @@
-const {$, http, toggleClass} = require('./util');
+const {$, http} = require('./util');
 
 window.addEventListener('load', () => {
 
