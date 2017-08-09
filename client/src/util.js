@@ -63,7 +63,7 @@ function bind(el, property) {
   }
 }
 
-function $(tagOrSelector, options = {}, toggle) {
+function $(tagOrSelector, options = {}, toggle = true) {
 
   if(tagOrSelector instanceof HTMLElement) {
     const el = tagOrSelector;
