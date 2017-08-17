@@ -24,8 +24,8 @@ module.exports = function(grunt) {
       },
 
       build: [
-        'server/*.js',
-        'client/src/*.js'
+        'server/**/*.js',
+        'client/src/**/*.js'
       ]
     },
 
