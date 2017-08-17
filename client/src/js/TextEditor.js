@@ -5,7 +5,7 @@ const evals = {
   heading: /(#+)(.*?)#+/g,
   italic: /_(.+?)_/g,
   bold: /\*(.+?)\*/g,
-  link: /([^!])\[(.+?)\]\((.+?)\)/g,
+  link: /(^|[^!])\[(.+?)\]\((.+?)\)/g,
   monospace: /`(.+?)`/g,
   linebreak: /\n\n/g,
   image: /\!\[(.+?)\]\((.+?)\)/g
