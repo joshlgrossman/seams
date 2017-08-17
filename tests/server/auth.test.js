@@ -1,7 +1,8 @@
+const {describe, it} = require('mocha');
 const {expect} = require('chai');
 const auth = require('../../server/auth');
 
-describe('auth', () => {
+describe('server/auth', () => {
   const json = {this: 'is', a: 'test'};
   const encoded = 'eyJ0aGlzIjoiaXMiLCJhIjoidGVzdCJ9';
 

@@ -1,8 +1,9 @@
+const {describe, it, beforeEach} = require('mocha');
 const {expect} = require('chai');
 const cheerio = require('cheerio');
 const directives = require('../../server/directives');
 
-describe('directives', () => {
+describe('server/directives', () => {
 
   let $, $div;
 

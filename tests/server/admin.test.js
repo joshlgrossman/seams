@@ -1,7 +1,8 @@
+const {describe, it} = require('mocha');
 const {expect} = require('chai');
 const admin = require('../../server/admin');
 
-describe('admin', () => {
+describe('server/admin', () => {
 
   describe('#cookie', () => {
     it('should return "seams-jwt"', () => {

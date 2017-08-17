@@ -1,7 +1,8 @@
+const {describe, it, beforeEach} = require('mocha');
 const {expect} = require('chai');
 const util = require('../../server/util');
 
-describe('util', () => {
+describe('server/util', () => {
 
   describe('#respond', () => {
 

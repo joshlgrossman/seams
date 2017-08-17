@@ -1,7 +1,8 @@
+const {describe, it} = require('mocha');
 const {expect} = require('chai');
 const cache = require('../../server/cache');
 
-describe('cache', () => {
+describe('server/cache', () => {
   const _cache = cache(100000);
   const content = {
     'test 1': {value: 'hello'},
