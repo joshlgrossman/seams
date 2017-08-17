@@ -50,7 +50,7 @@ function seams({dir, db: connection, secret, expires}) {
 
     const filePath = adminFile ? 
       path.join(__dirname, '../client/dist', url) :
-      path.join(dir, url)
+      path.join(dir, url);
 
     fs.readFile(filePath, async (err, content) => {
 
