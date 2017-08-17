@@ -1,6 +1,6 @@
 const AutoPrefixer = require('less-plugin-autoprefix');
 const CssCleaner = require('less-plugin-clean-css');
-const DEBUG = process.env.DEBUG == 'true';
+const debug = process.env.DEBUG === 'true';
 
 module.exports = function(grunt) {
 
@@ -32,8 +32,8 @@ module.exports = function(grunt) {
     browserify: {
       build: {
         files: {
-          'client/dist/seams.js': 'client/src/seams.js',
-          'client/dist/seams.ui.js': 'client/src/seams.ui.js'
+          'client/dist/seams.js': 'client/src/js/seams.js',
+          'client/dist/seams.ui.js': 'client/src/js/seams.ui.js'
         },
         options: {
           transform: [[
@@ -44,17 +44,15 @@ module.exports = function(grunt) {
         }
       },
       options: {
-        browserifyOptions: {
-          debug: DEBUG
-        }
+        browserifyOptions: { debug }
       }
     },
 
     less: {
       build: {
         files: {
-          'client/dist/seams.css': 'client/src/seams.less',
-          'client/dist/seams.ui.css': 'client/src/seams.ui.less'
+          'client/dist/seams.css': 'client/src/less/seams.less',
+          'client/dist/seams.ui.css': 'client/src/less/seams.ui.less'
         },
         options: {
           plugins: [
@@ -74,7 +72,7 @@ module.exports = function(grunt) {
           collapseWhitespace: true
         },
         files: {
-          'client/dist/seams.html': 'client/src/seams.html'
+          'client/dist/seams.html': 'client/src/html/seams.html'
         }
       }
     },
@@ -110,4 +108,4 @@ module.exports = function(grunt) {
     'htmlmin'
   ]);
 
-}
+};
