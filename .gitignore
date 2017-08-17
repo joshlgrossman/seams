@@ -3,3 +3,4 @@ web/
 client/dist/
 server.js
 seams.config.json
+.idea/
