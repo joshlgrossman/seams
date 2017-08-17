@@ -25,7 +25,7 @@ describe('client/util', () => {
       document.body.appendChild(el);
     });
 
-    describe('when first argument is a string', () => {
+    describe('string', () => {
 
       it('should select the element', () => {
         expect($('div')[0]).to.equal(el);
@@ -37,7 +37,7 @@ describe('client/util', () => {
 
     });
 
-    describe('when first argument is an HTMLElement', () => {
+    describe('HTMLElement', () => {
 
       beforeEach(() => {
         el.className = 'first-class';
