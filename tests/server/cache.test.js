@@ -1,5 +1,5 @@
 const {expect} = require('chai');
-const cache = require('../server/cache');
+const cache = require('../../server/cache');
 
 describe('cache', () => {
   const _cache = cache(100000);

@@ -1,4 +1,4 @@
-const directives = require('../../server/directives');
+const directives = require('../../../server/directives');
 
 class P {
   constructor() {

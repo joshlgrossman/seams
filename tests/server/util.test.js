@@ -1,5 +1,5 @@
 const {expect} = require('chai');
-const util = require('../server/util');
+const util = require('../../server/util');
 
 describe('util', () => {
 

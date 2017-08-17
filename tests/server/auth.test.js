@@ -1,5 +1,5 @@
 const {expect} = require('chai');
-const auth = require('../server/auth');
+const auth = require('../../server/auth');
 
 describe('auth', () => {
   const json = {this: 'is', a: 'test'};

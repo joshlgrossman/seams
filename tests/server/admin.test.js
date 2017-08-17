@@ -1,5 +1,5 @@
 const {expect} = require('chai');
-const admin = require('../server/admin');
+const admin = require('../../server/admin');
 
 describe('admin', () => {
 

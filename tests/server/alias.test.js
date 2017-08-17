@@ -1,5 +1,5 @@
 const {expect} = require('chai');
-const alias = require('../server/alias');
+const alias = require('../../server/alias');
 
 describe('alias', () => {
 

@@ -1,6 +1,6 @@
 const {expect} = require('chai');
 const cheerio = require('cheerio');
-const directives = require('../server/directives');
+const directives = require('../../server/directives');
 
 describe('directives', () => {
 

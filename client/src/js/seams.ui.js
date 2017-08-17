@@ -1,5 +1,5 @@
 const UI = require('./UI');
-const directives = require('../../server/directives');
+const directives = require('../../../server/directives');
 
 window.addEventListener('load', () => {
 
