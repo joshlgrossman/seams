@@ -1,8 +1,9 @@
 node_modules/
 web/
 client/src/
-test/
+tests/
 Gruntfile.js
 seams.config.json
 server.js
 eslint.json
+.idea/
