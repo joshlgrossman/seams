@@ -1,12 +1,11 @@
 const {describe, it, beforeEach, afterEach, before, after} = require('mocha');
 const {expect} = require('chai');
 const createDom = require('jsdom-global');
-const {$} = require('../../client/src/js/util');
-
+const {$, bind} = require('../../client/src/js/util');
 
 describe('client/util', () => {
 
-  let destroyDom;
+  let destroyDom, el;
 
   before(() => {
     destroyDom = createDom();
@@ -16,14 +15,16 @@ describe('client/util', () => {
     destroyDom();
   });
 
+  beforeEach(() => {
+    el = document.createElement('div');
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(el);
+  });
+
   describe('#$', () => {
-
-    let el;
-
-    beforeEach(() => {
-      el = document.createElement('div');
-      document.body.appendChild(el);
-    });
 
     describe('string', () => {
 
@@ -63,6 +64,48 @@ describe('client/util', () => {
         const computed = window.getComputedStyle(el, null);
         expect(computed.getPropertyValue('display')).to.equal('block');
         expect(computed.getPropertyValue('color')).to.equal('red');
+      });
+
+    });
+
+  });
+
+  describe('#bind', () => {
+
+    let binding;
+
+    describe('content', () => {
+
+      beforeEach(() => {
+        binding = bind(el, 'content');
+        el.innerHTML = 'test';
+      });
+
+      it('should set innerHTML', () => {
+        binding('hello world');
+        expect(el.innerHTML).to.equal('hello world');
+      });
+
+      it('should get the innerHTML', () => {
+        expect(binding()).to.equal('test');
+      });
+
+    });
+
+    describe('src', () => {
+
+      beforeEach(() => {
+        binding = bind(el, 'src');
+        el.setAttribute('src', 'test');
+      });
+
+      it('should set the src', () => {
+        binding('hello world');
+        expect(el.getAttribute('src')).to.equal('hello world');
+      });
+
+      it('should get the src', () => {
+        expect(binding()).to.equal('test');
       });
 
     });
