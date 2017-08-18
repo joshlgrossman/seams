@@ -3,6 +3,8 @@ const fileTypeRegExp = /\.[^\.]+$/g;
 const adminFileRegExp = /^\/seams.*/;
 const protectedFileRegExp = /^\/seams\.ui.*/;
 const paramsRegExp = /(\?|\&)([^=&]+)(\=([^&]+))?/g;
+const paramDelimRegExp = /^(\?|\&)/;
+const paramStartRegExp = /\?.*/;
 
 function alias(url) {
 
@@ -10,11 +12,11 @@ function alias(url) {
 
   const params = {};
   const paramArray = url.match(paramsRegExp);
-  url = url.replace(/\?.*/, '');
+  url = url.replace(paramStartRegExp, '');
 
   if(paramArray && paramArray.length) {
     for(const param of paramArray) {
-      const [key, val] = param.replace(/^(\?|\&)/, '').split('=');
+      const [key, val] = param.replace(paramDelimRegExp, '').split('=');
       params[key] = val || true;
     }
   }

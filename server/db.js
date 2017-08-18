@@ -25,7 +25,7 @@ function db(uri) {
 
       findOrCreate(connection, 'contents', (err, contents) => {
         if(err) return reject(err);
-        db.contents = contents
+        db.contents = contents;
         bothResolved();
       });
 

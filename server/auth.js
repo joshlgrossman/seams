@@ -58,7 +58,7 @@ function jwt(secret) {
 
   return {encode, decode};
 
-};
+}
 
 function validate({name, password}) {
   return new Promise((resolve, reject) => {
@@ -103,4 +103,4 @@ module.exports = {
   create,
   base64Decode,
   base64Encode
-}
+};

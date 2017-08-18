@@ -1,3 +1,5 @@
+const cookieRegExp = /(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/;
+
 function inject(url, $) {
   $('head')
     .prepend(`<link rel="stylesheet" href="/seams.ui.css">`)
@@ -7,7 +9,7 @@ function inject(url, $) {
 
 function cookie(str) {
   if(str)
-    return str.replace(/(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+    return str.replace(cookieRegExp, '$1');
   else return 'seams-jwt';
 }
 
