@@ -14,15 +14,15 @@ describe('server/cache', () => {
     };
   });
 
-  for(const key in content) {
-    const {value} = content[key];
-
-    it(`${key} should cache properly`, () => {
+  it('should cache properly', () => {
+    for(const key in content) {
+      const obj = content[key];
       expect(_cache(key)).to.not.be.ok;
-      _cache(key, value);
-      expect(_cache(key)).to.equal(value);
-    });
-
-  }
+      _cache(key, obj);
+      expect(_cache(key)).to.include({
+        value: obj.value
+      });
+    }
+  });
 
 });

@@ -4,7 +4,7 @@ function cache(expires = 300000) {
 
   return function(url, data) {
 
-    const now = new Date();
+    const now = Date.now();
 
     if(data === undefined) {
 
