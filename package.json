@@ -4,7 +4,8 @@
   "description": "static-site cms",
   "main": "server/seams.js",
   "scripts": {
-    "build": "node ./node_modules/grunt/bin/grunt",
+    "deploy": "node ./node_modules/grunt/bin/grunt",
+    "build": "node ./node_modules/grunt/bin/grunt build",
     "test": "node ./node_modules/grunt/bin/grunt test"
   },
   "engines": {

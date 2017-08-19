@@ -100,12 +100,13 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('default', [
-    'eslint',
-    'browserify', 
-    'uglify', 
-    'less', 
+  grunt.registerTask('build', [
+    'browserify',
+    'uglify',
+    'less',
     'htmlmin'
   ]);
+
+  grunt.registerTask('default', ['test', 'build']);
 
 };
