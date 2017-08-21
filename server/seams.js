@@ -128,11 +128,7 @@ function seams({dir, db: connection, secret, expires}) {
           }
         });
       } else {
-        respond(response, 200, {
-          json: {
-            err: true
-          }
-        });
+        throw new Error('Could not validate');
       }
 
     } catch (e) {
@@ -150,9 +146,10 @@ function seams({dir, db: connection, secret, expires}) {
         case 'GET': get(request, response); break;  // static files
         case 'PUT': put(request, response); break;  // content management
         case 'POST': post(request, response); break;// admin login
+        default: throw new Error('Action not supported');
       }
     } catch (e) {
-      console.error(`Error handling request: ${e}`);
+      console.error(`Error handling request: ${e.toString()}`);
       respond(response, 404);
     }
   }
