@@ -11,7 +11,6 @@ function cache(expires = 300000) {
       const cachedData = content[url];
 
       if(cachedData && (now - cachedData.accessedTime) < expires) {
-        cachedData.accessedTime = now;
         return cachedData;
       } else return null;
 
