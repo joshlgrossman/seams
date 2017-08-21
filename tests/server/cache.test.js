@@ -1,4 +1,4 @@
-const {describe, it} = require('mocha');
+const {describe, it, before} = require('mocha');
 const {expect} = require('chai');
 const cache = require('../../server/cache');
 
