@@ -19,6 +19,16 @@ window.addEventListener('load', () => {
     timeout = setTimeout(hideErrors, 5000);
   }
 
+  function checkValidity() {
+    if($name.value.trim() && $password.value.trim()) {
+      $submit.removeAttribute('disabled');
+    } else {
+      $submit.setAttribute('disabled', '');
+    }
+  }
+
+  $name.addEventListener('input', checkValidity);
+  $password.addEventListener('input', checkValidity);
 
   $submit.addEventListener('click', evt => {
     evt.preventDefault();
