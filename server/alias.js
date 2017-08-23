@@ -21,7 +21,7 @@ function alias(url) {
     }
   }
 
-  if(url[url.length-1] === '/') url += 'index.html';
+  if(url.endsWith('/')) url += 'index.html';
 
   let fileType = url.match(fileTypeRegExp);
   const fileName = url.match(fileNameRegExp);
