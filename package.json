@@ -1,10 +1,10 @@
 {
   "name": "seams",
   "version": "0.3.2",
-  "description": "static-site cms",
+  "description": "A minimal, markup-based, static-site CMS",
   "main": "server/seams.js",
   "scripts": {
-    "deploy": "node ./node_modules/grunt/bin/grunt",
+    "prepublishOnly": "node ./node_modules/grunt/bin/grunt",
     "build": "node ./node_modules/grunt/bin/grunt build",
     "test": "node ./node_modules/grunt/bin/grunt test"
   },
