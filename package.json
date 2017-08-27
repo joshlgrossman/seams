@@ -1,6 +1,6 @@
 {
   "name": "seams",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A minimal, markup-based, static-site CMS",
   "main": "server/seams.js",
   "scripts": {
