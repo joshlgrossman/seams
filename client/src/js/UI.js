@@ -68,8 +68,8 @@ class UI {
 
     window.addEventListener('mousemove', evt => {
       $(this.alert, {
-        left: evt.pageX,
-        top: evt.pageY
+        left: evt.pageX + 'px',
+        top: evt.pageY + 'px'
       });
     });
 
