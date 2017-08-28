@@ -19,7 +19,7 @@ class UI {
     for(let i = 0; i < directives.length; i++) {
       const directive = directives[i];
 
-      $(`*[data-${directives[i]}]`).forEach(el => {
+      $(`*[data-${directive}]`).forEach(el => {
         if(el.dataset.seamsId) {
           nodes[el.dataset.seamsId].directives.push(directive)
         } else {
