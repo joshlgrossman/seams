@@ -124,9 +124,13 @@
   z-index: 999999;
   background-color: rgba(0,0,0,0.2);
 
+  * {
+    box-sizing: border-box !important;
+  }
+
   .seams-admin-panel-prompt-content {
     #box(@min-height: 200px);
-    width: 300px !important;
+    width: 340px !important;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 
     .seams-admin-panel-prompt-title {
