@@ -22,9 +22,16 @@ function href($el, content) {
     $el.attr('href', content);
 }
 
+function background($el, content) {
+  return content === undefined ?
+    $el.css('background-image') :
+    $el.css('background-image', content);
+}
+
 module.exports = {
   content,
   text,
   src,
-  href
+  href,
+  background
 };
