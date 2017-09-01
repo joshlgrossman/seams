@@ -48,4 +48,13 @@ describe('server/directives', () => {
 
   });
 
+  describe('#background', () => {
+
+    it('should add background-image style', () => {
+      directives.background($div, 'url("/test.jpg")');
+      expect($div.css('background-image')).to.equal('url("/test.jpg")');
+    });
+
+  });
+
 });
