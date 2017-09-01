@@ -44,20 +44,19 @@ class HTMLWrapper {
 
   attr(key, val) {
     if(typeof val === 'undefined') return this.element.getAttribute(key)
-    else {
-      this.element.setAttribute(key, val);
-      return val;
-    }
+    else return this.element.setAttribute(key, val), val;
   }
 
   css(key, val) {
-    let styles = (this.element.getAttribute('style') || '');
+    let styles = (this.attr('style') || '');
     const re = new RegExp(`\s*${key}\s*:\s*([^;]*)`);
-    if(typeof val === 'undefined') return (styles.match(re) || [])[1];
-    else {
+    if(typeof val === 'undefined') {
+      const style = (styles.match(re) || [])[1];
+      if(typeof style === 'string') return style.trim();
+      else return '';
+    } else {
       styles = `${styles.replace(re, '')};${key}:${val};`.replace(/;+\s*;+/g,';');
-      this.element.setAttribute('style', styles);
-      return val;
+      return this.attr('style', styles);
     }
   }
 }
