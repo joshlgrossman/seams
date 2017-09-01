@@ -48,6 +48,7 @@ This will serve static content from the `web/` directory while injecting dynamic
 * `data-src` - Sets the `src` attribute of the element it is found on (useful for `img` tags).
 * `data-href` - Sets the `href` attribute of the element it is found on (useful for `a` tags).
 * `data-text` - Sets the `innerText` of the element it is found on.
+* `data-background` - Sets the `background-image` style property.
 
 Getting started
 ===
