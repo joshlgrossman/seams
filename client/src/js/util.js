@@ -43,9 +43,22 @@ class HTMLWrapper {
   }
 
   attr(key, val) {
-    return typeof val === 'undefined' ?
-      this.element.getAttribute(key) :
-      this.element.setAttribute(key, val)
+    if(typeof val === 'undefined') return this.element.getAttribute(key)
+    else {
+      this.element.setAttribute(key, val);
+      return val;
+    }
+  }
+
+  css(key, val) {
+    let styles = (this.element.getAttribute('style') || '');
+    const re = new RegExp(`\s*${key}\s*:\s*([^;]*)`);
+    if(typeof val === 'undefined') return (styles.match(re) || [])[1];
+    else {
+      styles = `${styles.replace(re, '')};${key}:${val};`.replace(/;+\s*;+/g,';');
+      this.element.setAttribute('style', styles);
+      return val;
+    }
   }
 }
 
