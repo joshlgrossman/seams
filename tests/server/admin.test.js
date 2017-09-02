@@ -26,7 +26,7 @@ describe('server/admin', () => {
     });
 
     it('should prepend scripts and add class', () => {
-      admin.inject('test', $);
+      admin.inject($);
       expect($.prepend.called).to.equal(2);
       expect($.addClass.called).to.equal(1);
     });
