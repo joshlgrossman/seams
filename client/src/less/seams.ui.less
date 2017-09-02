@@ -186,15 +186,18 @@
 #seams-admin-panel-alert {
   pointer-events: none;
   position: absolute;
-  display: none;
+  visibility: hidden;
   transform: translate(-50%, -50%);
   background-color: fade(#eee, 10%);
-  width: 40px;
-  height: 40px;
+  width: 0;
+  height: 0;
   border-radius: 100px;
+  transition: width 75ms ease-out, height 75ms ease-out;
 
   &.show {
-    display: block;
+    width: 40px;
+    height: 40px;
+    visibility: visible;
     box-shadow: 0 0 20px rgba(0,0,0,0.25);
   }
 
