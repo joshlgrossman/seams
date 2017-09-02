@@ -1,6 +1,6 @@
 const cookieRegExp = /(?:(?:^|.*;\s*)seams-jwt\s*\=\s*([^;]*).*$)|^.*$/;
 
-function inject(url, $) {
+function inject($) {
   $('head')
     .prepend(`<link rel="stylesheet" href="/seams.ui.css">`)
     .prepend(`<script src="/seams.ui.min.js"></script>`);

@@ -66,7 +66,7 @@ function seams({dir, db: connection, secret, expires}) {
           const $ = cheerio.load(content);
           await render(url, $);
           debug(`${url} rendered`);
-          if(token) admin.inject(url, $);
+          if(token) admin.inject($);
 
           content = $.html();
         } catch(e) {
