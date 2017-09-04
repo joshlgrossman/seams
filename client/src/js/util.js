@@ -1,5 +1,9 @@
 const directives = require('../../../server/directives');
 
+const undef = val => typeof val === 'undefined';
+const string = val => typeof val === 'string';
+const object = val => typeof val === 'object';
+
 class P {
   constructor() {
     this.resolve = function(){};
@@ -31,28 +35,28 @@ class HTMLWrapper {
   }
 
   html(val) {
-    return typeof val === 'undefined' ?
+    return undef(val) ?
       this.element.innerHTML :
       this.element.innerHTML = val;
   }
 
   text(val) {
-    return typeof val === 'undefined' ?
+    return undef(val) ?
       this.element.innerText :
       this.element.innerText = val;
   }
 
   attr(key, val) {
-    if(typeof val === 'undefined') return this.element.getAttribute(key)
+    if(undef(val)) return this.element.getAttribute(key)
     else return this.element.setAttribute(key, val), val;
   }
 
   css(key, val) {
     let styles = (this.attr('style') || '');
     const re = new RegExp(`\s*${key}\s*:\s*([^;]*)`);
-    if(typeof val === 'undefined') {
+    if(undef(val)) {
       const style = (styles.match(re) || [])[1];
-      if(typeof style === 'string') return style.trim();
+      if(string(style)) return style.trim();
       else return '';
     } else {
       styles = `${styles.replace(re, '')};${key}:${val};`.replace(/;+\s*;+/g,';');
@@ -66,7 +70,7 @@ function bind(el, property) {
   return function(val) {
     if(property in directives) return directives[property]($el, val);
     else if (property in el) {
-      return typeof val === 'undefined' ? 
+      return undef(val) ? 
         el[property] :
         el[property] = val;
     } else {
@@ -80,7 +84,7 @@ function $(tagOrSelector, options = {}, toggle = true) {
   if(tagOrSelector instanceof HTMLElement) {
     const el = tagOrSelector;
 
-    if(typeof options === 'string') {
+    if(string(options)) {
       const className = options.replace('.', '');
       if(toggle) {
         if(el.className.indexOf(className) === -1)
@@ -89,7 +93,7 @@ function $(tagOrSelector, options = {}, toggle = true) {
         const re = new RegExp(`\\s*${className}\\s*`);
         el.className = el.className.replace(re,'');
       }
-    } else if (typeof options === 'object') {
+    } else if (object(options)) {
       const arr = [];
       for(const prop in options) arr.push(`${prop}:${options[prop]}`);
       el.setAttribute('style', arr.join(';'));
@@ -146,7 +150,7 @@ http.get = (url, params) => {
 };
 
 function cookie(key, val) {
-  if(typeof val !== 'undefined') {
+  if(!undef(val)) {
     document.cookie = `${key}=${val};${!val?'expires=Thu, 01 Jan 1970 00:00:00 UTC;':''}path=/;`
     return val;
   } else {
@@ -157,6 +161,9 @@ function cookie(key, val) {
 const CLASSNAME = 'seams-admin-panel';
 
 module.exports = {
+  undef,
+  string,
+  object,
   P,
   CLASSNAME,
   bind,
