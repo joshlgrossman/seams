@@ -1,7 +1,7 @@
 const {describe, it, beforeEach, afterEach, before, after} = require('mocha');
 const {expect} = require('chai');
 const createDom = require('jsdom-global');
-const {$, bind} = require('../../client/src/js/util');
+const {$, bind, undef, string, object} = require('../../client/src/js/util');
 
 describe('client/util', () => {
 
@@ -108,6 +108,42 @@ describe('client/util', () => {
         expect(binding()).to.equal('test');
       });
 
+    });
+
+  });
+
+  describe('#undef', () => {
+
+    it('should return true when undefined', () => {
+      expect(undef()).to.be.true;
+    });
+
+    it('should return false when not undefined', () => {
+      expect(undef(0)).to.be.false;
+    });
+
+  });
+
+  describe('#string', () => {
+
+    it('should return true when string', () => {
+      expect(string('')).to.be.true;
+    });
+
+    it('should return false when not a string', () => {
+      expect(string(0)).to.be.false;
+    });
+
+  });
+
+  describe('#object', () => {
+
+    it('should return true when object', () => {
+      expect(object({})).to.be.true;
+    });
+
+    it('should return false when not an object', () => {
+      expect(object(0)).to.be.false;
     });
 
   });
